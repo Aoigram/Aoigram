@@ -19,6 +19,7 @@ import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.BaseCell;
 import org.telegram.ui.Cells.ChatMessageCell;
+import org.telegram.ui.Cells.ChatMessageTransitionParams;
 
 public final class ForwardsCount {
 
@@ -74,7 +75,7 @@ public final class ForwardsCount {
         if (layout == null) {
             return 0;
         }
-        ChatMessageCell.TransitionParams params = cell.transitionParams;
+        ChatMessageTransitionParams params = cell.transitionParams;
         MessageObject messageObject = cell.getMessageObject();
         boolean inAnimation = animating && animateLayout == null;
         float animationProgress = animating ? params.animateChangeProgress : 1f;

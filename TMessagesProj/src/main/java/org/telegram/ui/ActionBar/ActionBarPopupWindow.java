@@ -167,7 +167,7 @@ public class ActionBarPopupWindow extends PopupWindow {
             }
             if (backgroundDrawable != null) {
                 backgroundDrawable.getPadding(bgPaddings);
-                setBackgroundColor(getThemedColor(Theme.key_actionBarDefaultSubmenuBackground));
+                ThemeBind.backgroundColor(this, Theme.key_actionBarDefaultSubmenuBackground, resourcesProvider);
             }
 
 
@@ -374,6 +374,8 @@ public class ActionBarPopupWindow extends PopupWindow {
             backgroundDrawable = drawable;
             if (backgroundDrawable != null) {
                 backgroundDrawable.getPadding(bgPaddings);
+            } else {
+                bgPaddings.setEmpty();
             }
         }
 

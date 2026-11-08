@@ -50,7 +50,7 @@ import org.telegram.ui.Components.UniversalRecyclerView;
 import org.telegram.ui.Components.blur3.DownscaleScrollableNoiseSuppressor;
 import org.telegram.ui.Components.blur3.ViewGroupPartRenderer;
 import org.telegram.ui.Components.blur3.capture.IBlur3Capture;
-import org.telegram.ui.Components.blur3.source.BlurredBackgroundSourceRenderNode;
+import org.telegram.utils.glass.source.GlassSourceRenderNode;
 
 import java.util.ArrayList;
 
@@ -71,7 +71,7 @@ public abstract class BaseAoiSettingsActivity extends BaseFragment {
     private final SparseBooleanArray expandedGroups = new SparseBooleanArray();
 
     private final DownscaleScrollableNoiseSuppressor scrollableViewNoiseSuppressor;
-    private final BlurredBackgroundSourceRenderNode iBlur3SourceGlassFrosted;
+    private final GlassSourceRenderNode iBlur3SourceGlassFrosted;
     private IBlur3Capture iBlur3Capture;
     private final ArrayList<RectF> iBlur3Positions = new ArrayList<>();
     private final RectF iBlur3PositionActionBar = new RectF();
@@ -79,7 +79,7 @@ public abstract class BaseAoiSettingsActivity extends BaseFragment {
     protected BaseAoiSettingsActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             scrollableViewNoiseSuppressor = new DownscaleScrollableNoiseSuppressor();
-            iBlur3SourceGlassFrosted = new BlurredBackgroundSourceRenderNode(null);
+            iBlur3SourceGlassFrosted = new GlassSourceRenderNode(null);
         } else {
             scrollableViewNoiseSuppressor = null;
             iBlur3SourceGlassFrosted = null;

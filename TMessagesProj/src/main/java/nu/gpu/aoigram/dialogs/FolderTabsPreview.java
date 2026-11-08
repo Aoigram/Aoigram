@@ -20,7 +20,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.blur3.BlurredBackgroundDrawableViewFactory;
 import org.telegram.ui.Components.blur3.drawable.BlurredBackgroundDrawable;
 import org.telegram.ui.Components.blur3.drawable.color.impl.BlurredBackgroundProviderImpl;
-import org.telegram.ui.Components.blur3.source.BlurredBackgroundSourceColor;
+import org.telegram.utils.glass.source.GlassSourceColor;
 
 import nu.gpu.aoigram.config.AoiConfig;
 
@@ -34,7 +34,7 @@ public final class FolderTabsPreview extends FrameLayout {
 
     private final BaseFragment fragment;
     private final FilterTabsView tabsView;
-    private final BlurredBackgroundSourceColor backgroundSource = new BlurredBackgroundSourceColor();
+    private final GlassSourceColor backgroundSource = new GlassSourceColor();
 
     public FolderTabsPreview(Context context, BaseFragment fragment) {
         super(context);

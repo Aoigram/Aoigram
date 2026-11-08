@@ -3,17 +3,17 @@ package nu.gpu.aoigram.messages;
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.LocaleController.getString;
 
-import android.text.Layout;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 
 import org.telegram.messenger.R;
-import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.ColoredImageSpan;
 
 public final class EditedIcon {
 
     private static final String PLACEHOLDER = "\u200B";
+    private static final float WIDTH = 16.5f;
     private static SpannableString stub;
 
     private SpannableString icon;
@@ -32,8 +32,8 @@ public final class EditedIcon {
         return stub;
     }
 
-    public static int width() {
-        return (int) Math.ceil(Layout.getDesiredWidth(stub(), Theme.chat_timePaint));
+    public static int width(CharSequence text) {
+        return TextUtils.indexOf(text, PLACEHOLDER) >= 0 ? dp(WIDTH) : 0;
     }
 
     public static String describe(CharSequence text) {
@@ -43,7 +43,7 @@ public final class EditedIcon {
     private static SpannableString create(boolean draw) {
         ColoredImageSpan span = new ColoredImageSpan(R.drawable.filled_profile_edit_24);
         span.setSize(dp(14));
-        span.setWidth(dp(16.5f));
+        span.setWidth(dp(WIDTH));
         span.setTranslateX(-dp(2.5f));
         span.draw = draw;
         SpannableString text = new SpannableString("\u200E" + PLACEHOLDER);
