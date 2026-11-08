@@ -21,6 +21,8 @@ import org.telegram.ui.Cells.BaseCell;
 import org.telegram.ui.Cells.ChatMessageCell;
 import org.telegram.ui.Cells.ChatMessageTransitionParams;
 
+import nu.gpu.aoigram.typeface.Typefaces;
+
 public final class ForwardsCount {
 
     private Drawable drawable;
@@ -106,7 +108,7 @@ public final class ForwardsCount {
             drawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
         }
 
-        float w = BaseCell.setDrawableBounds(drawable, x - dp(1), timeY, Theme.chat_timePaint.getTextSize());
+        float w = BaseCell.setDrawableBounds(drawable, x - dp(1), timeY + Typefaces.ascentShift(Theme.chat_timePaint), Theme.chat_timePaint.getTextSize());
         canvas.save();
         if (progress != 1f) {
             float scale = 0.5f + 0.5f * progress;

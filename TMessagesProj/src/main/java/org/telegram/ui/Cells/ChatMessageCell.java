@@ -272,6 +272,7 @@ import nu.gpu.aoigram.messages.EditedIcon;
 import nu.gpu.aoigram.messages.ForwardsCount;
 import nu.gpu.aoigram.transcription.Transcription;
 import nu.gpu.aoigram.translate.TranslationDisplay;
+import nu.gpu.aoigram.typeface.Typefaces;
 
 public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate, ImageReceiver.ImageReceiverDelegate,
         DownloadController.FileDownloadProgressListener, TextSelectionHelper.SelectableView,
@@ -21984,6 +21985,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
         float offsetX = reactionsLayoutInBubble.isSmall ? reactionsLayoutInBubble.getCurrentWidth(1f) : 0;
         int timeAlpha = Theme.chat_timePaint.getAlpha();
         float timeY = getTimeY(timeYOffset);
+        float iconY = timeY + Typefaces.ascentShift(Theme.chat_timePaint);
         if (repliesLayout != null || transitionParams.animateReplies) {
             float repliesX = (transitionParams.shouldAnimateTimeX ? this.timeX : timeX) + offsetX;
             boolean inAnimation = transitionParams.animateReplies && transitionParams.animateRepliesLayout == null && repliesLayout != null;
@@ -22021,7 +22023,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                     repliesDrawable = getThemedDrawable(drawSelectionBackground ? Theme.key_drawable_msgOutRepliesSelected : Theme.key_drawable_msgOutReplies);
                 }
             }
-            w = setDrawableBounds(repliesDrawable, repliesX, timeY, Theme.chat_timePaint.getTextSize());
+            w = setDrawableBounds(repliesDrawable, repliesX, iconY, Theme.chat_timePaint.getTextSize());
             float repliesAlpha = alpha;
             if (inAnimation) {
                 repliesAlpha *= transitionParams.animateChangeProgress;
@@ -22098,7 +22100,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 }
             }
             float y = timeY;
-            float w = setDrawableBounds(viewsDrawable, viewsX, y + dp(1.5f), Theme.chat_timePaint.getTextSize() - dp(2));
+            float w = setDrawableBounds(viewsDrawable, viewsX, iconY + dp(1.5f), Theme.chat_timePaint.getTextSize() - dp(2));
             if (useScale) {
                 canvas.save();
                 float cx = viewsX + (viewsDrawable.getIntrinsicWidth() + dp(3) + viewsTextWidth) / 2f;
@@ -22173,14 +22175,14 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             if (transitionParams.animatePinned) {
                 if (isPinned) {
                     pinnedDrawable.setAlpha((int) (255 * alpha * transitionParams.animateChangeProgress));
-                    w = setDrawableBounds(pinnedDrawable, pinnedX, timeY, Theme.chat_timePaint.getTextSize() + dp(1));
+                    w = setDrawableBounds(pinnedDrawable, pinnedX, iconY, Theme.chat_timePaint.getTextSize() + dp(1));
                 } else {
                     pinnedDrawable.setAlpha((int) (255 * alpha * (1.0f - transitionParams.animateChangeProgress)));
-                    w = setDrawableBounds(pinnedDrawable, pinnedX, timeY, Theme.chat_timePaint.getTextSize() + dp(1));
+                    w = setDrawableBounds(pinnedDrawable, pinnedX, iconY, Theme.chat_timePaint.getTextSize() + dp(1));
                 }
             } else {
                 pinnedDrawable.setAlpha((int) (255 * alpha));
-                w = setDrawableBounds(pinnedDrawable, pinnedX, timeY, Theme.chat_timePaint.getTextSize() + dp(1));
+                w = setDrawableBounds(pinnedDrawable, pinnedX, iconY, Theme.chat_timePaint.getTextSize() + dp(1));
             }
             if (useScale) {
                 canvas.save();

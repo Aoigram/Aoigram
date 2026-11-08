@@ -59,6 +59,10 @@ public class Typefaces {
     };
     private static final Typeface regularTypeface = AoiConfig.systemFonts.get() && sansFamily != Typeface.DEFAULT ? sans(400, false) : null;
 
+    private static final Paint defaultPaint = new Paint();
+    private static float ascentShiftSize;
+    private static int ascentShift;
+
     private static Typeface titleTypeface;
 
     static {
@@ -113,6 +117,17 @@ public class Typefaces {
         for (Paint paint : paints) {
             paint.setTypeface(regularTypeface);
         }
+    }
+
+    public static int ascentShift(Paint paint) {
+        if (regularTypeface == null) {
+            return 0;
+        }
+        if (ascentShiftSize != paint.getTextSize()) {
+            defaultPaint.setTextSize(ascentShiftSize = paint.getTextSize());
+            ascentShift = defaultPaint.getFontMetricsInt().ascent - paint.getFontMetricsInt().ascent;
+        }
+        return ascentShift;
     }
 
     public static void applyTheme(Resources.Theme theme) {
