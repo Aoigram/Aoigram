@@ -429,6 +429,7 @@ public class ChatActivity extends BaseFragment implements
     private int aoiMyMessagesReturnId;
     private boolean aoiHideChannelBottomBar;
     private boolean aoiForwardNoQuote;
+    private ActionBarMenuItem.Item aoiMoreItem;
 
     private boolean aoiCanSelectMessage(MessageObject message) {
         int type = getMessageType(message);
@@ -478,23 +479,40 @@ public class ChatActivity extends BaseFragment implements
         ActionBarPopupWindow.GapView gap = new ActionBarPopupWindow.GapView(context, themeDelegate, Theme.key_actionBarDefaultSubmenuSeparator);
         gap.setTag(R.id.fit_width_tag, 1);
         layout.addView(gap, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 8));
-        aoiAddMoreMenuItem(layout, MENU_TO_BEGINNING, R.drawable.msg_go_up, null, getString(R.string.ToBeginning));
-        if (MyMessages.isAvailable(currentChat)) {
-            aoiAddMoreMenuItem(layout, MENU_MY_MESSAGES, R.drawable.msg_usersearch, null, getString(R.string.MyMessages));
-        }
-        if (ChatObject.isBoostSupported(currentChat) && (getUserConfig().isPremium() || ChatObject.isBoosted(chatInfo) || ChatObject.hasAdminRights(currentChat))) {
-            aoiAddMoreMenuItem(layout, boost_group, 0, new RLottieDrawable(R.raw.boosts, dp(24), dp(24)), getString(ChatObject.isChannelAndNotMegaGroup(currentChat) ? R.string.BoostingBoostChannelMenu : R.string.BoostingBoostGroupMenu));
-        }
+        aoiAddMoreItems((id, icon, iconDrawable, text) -> {
+            ActionBarMenuSubItem item = ActionBarMenuItem.addItem(layout, 0, text, false, themeDelegate);
+            item.setTextAndIcon(text, icon, iconDrawable);
+            item.setOnClickListener(v -> {
+                headerItem.closeSubMenu();
+                actionBar.getActionBarMenuOnItemClick().onItemClick(id);
+            });
+        });
         return layout;
     }
 
-    private void aoiAddMoreMenuItem(ViewGroup layout, int id, int icon, Drawable iconDrawable, CharSequence text) {
-        ActionBarMenuSubItem item = ActionBarMenuItem.addItem(layout, 0, text, false, themeDelegate);
-        item.setTextAndIcon(text, icon, iconDrawable);
-        item.setOnClickListener(v -> {
-            headerItem.closeSubMenu();
-            actionBar.getActionBarMenuOnItemClick().onItemClick(id);
+    private void aoiAddMoreItems(Utilities.Callback4<Integer, Integer, Drawable, CharSequence> add) {
+        add.run(MENU_TO_BEGINNING, R.drawable.msg_go_up, null, getString(R.string.ToBeginning));
+        if (MyMessages.isAvailable(currentChat)) {
+            add.run(MENU_MY_MESSAGES, R.drawable.msg_usersearch, null, getString(R.string.MyMessages));
+        }
+        if (ChatObject.isBoostSupported(currentChat) && (getUserConfig().isPremium() || ChatObject.isBoosted(chatInfo) || ChatObject.hasAdminRights(currentChat))) {
+            add.run(boost_group, 0, new RLottieDrawable(R.raw.boosts, dp(24), dp(24)), getString(ChatObject.isChannelAndNotMegaGroup(currentChat) ? R.string.BoostingBoostChannelMenu : R.string.BoostingBoostGroupMenu));
+        }
+    }
+
+    private void aoiAddSidebarMoreMenu(ItemOptions o) {
+        ItemOptions more = o.makeSwipeback();
+        more.add(R.drawable.msg_arrow_back, getString(R.string.Back), () -> {
+            o.closeSwipeback();
+            o.dismiss();
         });
+        more.addGap();
+        aoiAddMoreItems((id, icon, iconDrawable, text) -> more.addIf(true, icon, iconDrawable, text, () -> {
+            o.dismiss();
+            actionBar.getActionBarMenuOnItemClick().onItemClick(id);
+        }));
+        o.add(R.drawable.iv_media_dots, getString(R.string.MoreMenu), () -> o.openSwipeback(more));
+        o.getLast().setRightIcon(R.drawable.msg_arrowright);
     }
 
     private boolean aoiFilteringMyMessages() {
@@ -4738,7 +4756,7 @@ public class ChatActivity extends BaseFragment implements
             if (ChatObject.isChannel(currentChat) && !ChatObject.isMonoForum(currentChat) && ChatObject.hasAdminRights(currentChat)) {
                 headerItem.lazilyAddSubItem(MENU_RECENT_ACTIONS, R.drawable.msg_log, getString(R.string.EventLog));
             }
-            headerItem.lazilyAddSwipeBackItem(R.drawable.iv_media_dots, null, getString(R.string.MoreMenu), () -> aoiCreateMoreMenu(context));
+            aoiMoreItem = headerItem.lazilyAddSwipeBackItem(R.drawable.iv_media_dots, null, getString(R.string.MoreMenu), () -> aoiCreateMoreMenu(context));
         }
         menu.setVisibility(inMenuMode ? View.GONE : View.VISIBLE);
 
@@ -10372,6 +10390,8 @@ public class ChatActivity extends BaseFragment implements
                     // the notifications menu, as in the chat's
                     o.add(subItem.getIconResId(), text, () -> openSidebarMuteMenu(o));
                 }
+            } else if (subItem == aoiMoreItem.getView()) {
+                aoiAddSidebarMoreMenu(o);
             } else if (subItem.getTag() instanceof Integer) {
                 final int id = (Integer) subItem.getTag();
                 o.addIf(true, subItem.getIconResId(), iconDrawable, text, () -> actionBar.getActionBarMenuOnItemClick().onItemClick(id));
