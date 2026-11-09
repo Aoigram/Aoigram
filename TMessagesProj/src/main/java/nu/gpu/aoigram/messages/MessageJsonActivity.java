@@ -44,9 +44,9 @@ import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_iv;
 import org.telegram.ui.ActionBar.ActionBar;
-import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
 import org.telegram.ui.ActionBar.BaseFragment;
+import org.telegram.ui.ActionBar.SimpleActionBarMenu;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AlertsCreator;
 import org.telegram.ui.Components.BulletinFactory;
@@ -132,15 +132,14 @@ public final class MessageJsonActivity extends BaseAoiSettingsActivity {
     }
 
     @Override
-    public View createView(Context context) {
-        View view = super.createView(context);
-        ActionBarMenu menu = actionBar.createMenu();
+    protected void onCreateSettingsView(Context context) {
+        SimpleActionBarMenu menu = simpleActionBar.createMenu();
         menu.addItem(1, R.drawable.msg_copy).setContentDescription(getString(R.string.Copy));
         ActionBarMenuItem more = menu.addItem(2, R.drawable.ic_ab_other);
         more.setContentDescription(getString(R.string.AccDescrMoreOptions));
         more.addSubItem(3, getString(R.string.JsonExpandAll));
         more.addSubItem(4, getString(R.string.JsonCollapseAll));
-        actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
+        simpleActionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
                 if (id == -1) {
@@ -156,7 +155,6 @@ public final class MessageJsonActivity extends BaseAoiSettingsActivity {
                 }
             }
         });
-        return view;
     }
 
     private void addNodes(JsonElement element, String key, int depth, boolean comma) {

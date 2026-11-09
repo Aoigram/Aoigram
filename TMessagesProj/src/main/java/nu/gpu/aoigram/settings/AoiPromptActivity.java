@@ -19,14 +19,16 @@ import androidx.core.view.WindowInsetsCompat;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBar;
-import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.AlertDialog;
+import org.telegram.ui.ActionBar.SimpleActionBarDoneButton;
+import org.telegram.ui.ActionBar.SimpleActionBarMenu;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.Components.EditTextBoldCursor;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
+import org.telegram.utils.glass.BaseFragmentSimpleGlass;
 
 import java.util.ArrayList;
 
@@ -46,8 +48,8 @@ public final class AoiPromptActivity extends BaseAoiSettingsActivity {
     private EditTextBoldCursor editor;
     private TextInfoPrivacyCell counter;
     private TextInfoPrivacyCell placeholders;
-    private int topInset;
-    private int bottomInset;
+    private SimpleActionBarDoneButton doneButton;
+    private int imeBottom;
 
     private AoiPromptActivity(StringConfig config, String defaultPrompt, @StringRes int titleResId, String pageKey) {
         this.config = config;
@@ -81,15 +83,12 @@ public final class AoiPromptActivity extends BaseAoiSettingsActivity {
     @Override
     public View createView(Context context) {
         View view = super.createView(context);
-        topInset = listView.getPaddingTop();
         if (config == AoiConfig.llmUserPrompt) {
             placeholders = new TextInfoPrivacyCell(context, getResourceProvider());
             placeholders.setText(AndroidUtilities.replaceMultipleTags(getString(R.string.LlmPlaceholdersInfo), () -> insertPlaceholder("@text"), () -> insertPlaceholder("@toLang")));
             placeholders.setBackgroundColor(getThemedColor(Theme.key_windowBackgroundGray));
             placeholders.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> updateListPadding());
-            FrameLayout.LayoutParams params = LayoutHelper.createFrame(-1, -2, Gravity.TOP);
-            params.topMargin = topInset;
-            contentView.addView(placeholders, params);
+            contentView.addView(placeholders, LayoutHelper.createFrame(-1, -2, Gravity.TOP));
         }
         return view;
     }
@@ -114,12 +113,14 @@ public final class AoiPromptActivity extends BaseAoiSettingsActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             public void afterTextChanged(Editable text) {
                 counter.setText(formatPluralStringComma("PromptCharacters", text.length()));
+                doneButton.setActive(!initialText.contentEquals(text), true);
             }
         });
-        ActionBarMenu menu = actionBar.createMenu();
+        SimpleActionBarMenu menu = simpleActionBar.createMenu();
         menu.addItem(1, R.drawable.outline_header_reset).setContentDescription(getString(R.string.LlmRestoreDefault));
-        menu.addItemWithWidth(2, R.drawable.ic_ab_done, dp(56), getString(R.string.Done));
-        actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
+        doneButton = simpleActionBar.createDoneButton(2, getString(R.string.Save));
+        doneButton.setActive(false, false);
+        simpleActionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
                 if (id == 1) editor.setText(defaultPrompt);
@@ -129,21 +130,32 @@ public final class AoiPromptActivity extends BaseAoiSettingsActivity {
         });
     }
 
-    protected @NonNull WindowInsetsCompat onApplyWindowInsets(@NonNull View view, @NonNull WindowInsetsCompat insets) {
-        super.onApplyWindowInsets(view, insets);
-        topInset = listView.getPaddingTop();
-        bottomInset = Math.max(AndroidUtilities.getDefaultWindowInsets(insets, false).bottom, insets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
-        if (placeholders != null) {
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) placeholders.getLayoutParams();
-            params.topMargin = topInset;
-            placeholders.setLayoutParams(params);
-        }
+    @Override
+    protected void onViewCreated(View view) {
+        super.onViewCreated(view);
+        updateListPadding();
+    }
+
+    @Override
+    public WindowInsetsCompat onInsetsInternal(@NonNull View view, @NonNull WindowInsetsCompat insets) {
+        super.onInsetsInternal(view, insets);
+        imeBottom = Math.max(0, insets.getInsets(WindowInsetsCompat.Type.ime()).bottom - mSystemInsets.bottom);
         updateListPadding();
         return WindowInsetsCompat.CONSUMED;
     }
 
     private void updateListPadding() {
-        listView.setPadding(0, topInset + (placeholders == null ? 0 : placeholders.getHeight()), 0, bottomInset);
+        int top = ActionBar.getCurrentActionBarHeight();
+        if (placeholders != null) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) placeholders.getLayoutParams();
+            int topMargin = mSystemInsets.top + top;
+            if (params.topMargin != topMargin) {
+                params.topMargin = topMargin;
+                placeholders.setLayoutParams(params);
+            }
+            top += placeholders.getHeight();
+        }
+        BaseFragmentSimpleGlass.setListViewParams(listView, mSystemInsets.top, mSystemInsets.bottom, top, imeBottom);
     }
 
     @Override

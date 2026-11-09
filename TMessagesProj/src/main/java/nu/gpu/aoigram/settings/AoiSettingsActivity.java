@@ -1,7 +1,9 @@
 package nu.gpu.aoigram.settings;
 
+import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.LocaleController.getString;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -11,21 +13,26 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBar;
-import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
+import org.telegram.ui.ActionBar.SimpleActionBarMenu;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.SettingsSearchCell;
 import org.telegram.ui.Components.BackupImageView;
+import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.EmptyTextProgressView;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
 import org.telegram.ui.LauncherIconController;
 import org.telegram.ui.LauncherIconController.LauncherIcon;
+import org.telegram.utils.glass.BaseFragmentSimpleGlass;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +59,8 @@ public class AoiSettingsActivity extends BaseAoiSettingsActivity {
     private ActionBarMenuItem searchItem;
     private ArrayList<AoiSettingsSearchItem> searchItems;
     private ArrayList<AoiSettingsSearchItem> searchResults;
+    private boolean actionBarVisible;
+    private ValueAnimator actionBarVisibleAnimator;
 
     @Override
     protected void onCreateSettingsView(Context context) {
@@ -60,18 +69,68 @@ public class AoiSettingsActivity extends BaseAoiSettingsActivity {
     }
 
     @Override
+    public View createView(Context context) {
+        View view = super.createView(context);
+        listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                updateActionBarVisible(true);
+            }
+        });
+        return view;
+    }
+
+    @Override
+    protected void onViewCreated(View view) {
+        super.onViewCreated(view);
+        BaseFragmentSimpleGlass.setListViewParams(listView, mSystemInsets.top, mSystemInsets.bottom, dp(12), 0);
+        updateActionBarVisible(false);
+    }
+
+    @Override
+    public void onInsets(int left, int top, int right, int bottom) {
+        BaseFragmentSimpleGlass.setListViewParams(listView, top, bottom, dp(12), 0);
+    }
+
+    @Override
+    public void onFragmentDestroy() {
+        if (actionBarVisibleAnimator != null) {
+            actionBarVisibleAnimator.cancel();
+        }
+        super.onFragmentDestroy();
+    }
+
+    @Override
     protected CharSequence getActionBarTitle() {
         return getString(R.string.AoiSettings);
     }
 
-    @Override
-    protected boolean hasCollapsingHeader() {
-        return true;
+    private void updateActionBarVisible(boolean animated) {
+        View firstChild = listView.getChildAt(0);
+        boolean visible = searchItem.isSearchFieldVisible2() || firstChild != null
+                && (listView.getChildAdapterPosition(firstChild) > 0 || firstChild.getY() + firstChild.getHeight() < simpleActionBar.getHeight());
+        if (actionBarVisible == visible && animated) {
+            return;
+        }
+        actionBarVisible = visible;
+        if (actionBarVisibleAnimator != null) {
+            actionBarVisibleAnimator.cancel();
+            actionBarVisibleAnimator = null;
+        }
+        if (!animated) {
+            setActionBarVisibilityFactor(visible ? 1.0f : 0.0f);
+            return;
+        }
+        actionBarVisibleAnimator = ValueAnimator.ofFloat(simpleActionBar.getTitlesAlpha(), visible ? 1.0f : 0.0f);
+        actionBarVisibleAnimator.addUpdateListener(animator -> setActionBarVisibilityFactor((float) animator.getAnimatedValue()));
+        actionBarVisibleAnimator.setInterpolator(CubicBezierInterpolator.EASE_OUT_QUINT);
+        actionBarVisibleAnimator.setDuration(420);
+        actionBarVisibleAnimator.start();
     }
 
-    @Override
-    protected boolean shouldShowActionBarBackground() {
-        return searchItem.isSearchFieldVisible2() || super.shouldShowActionBarBackground();
+    private void setActionBarVisibilityFactor(float factor) {
+        simpleActionBar.setTitlesAlpha(factor);
+        simpleActionBar.getBackground().setAlpha((int) (factor * 255));
     }
 
     @Override
@@ -128,20 +187,20 @@ public class AoiSettingsActivity extends BaseAoiSettingsActivity {
         searchEmptyView.setText(getString(R.string.SettingsNoResults));
         searchEmptyView.showTextView();
 
-        ActionBarMenu menu = actionBar.createMenu();
+        SimpleActionBarMenu menu = simpleActionBar.createMenu();
         searchItem = menu.addItem(0, R.drawable.outline_header_search, getResourceProvider())
                 .setIsSearchField(true)
                 .setActionBarMenuItemSearchListener(new ActionBarMenuItem.ActionBarMenuItemSearchListener() {
                     @Override
                     public void onSearchExpand() {
                         search("");
-                        updateActionBarVisible();
+                        updateActionBarVisible(true);
                     }
 
                     @Override
                     public void onSearchCollapse() {
                         listView.adapter.update(false);
-                        updateActionBarVisible();
+                        updateActionBarVisible(true);
                     }
 
                     @Override
@@ -284,9 +343,9 @@ public class AoiSettingsActivity extends BaseAoiSettingsActivity {
 
     @Override
     public boolean onBackPressed(boolean invoked) {
-        if (actionBar.isSearchFieldVisible()) {
+        if (simpleActionBar.isSearchFieldVisible()) {
             if (invoked) {
-                actionBar.closeSearchField();
+                simpleActionBar.closeSearchField();
             }
             return false;
         }

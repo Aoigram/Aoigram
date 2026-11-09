@@ -34,7 +34,7 @@ public final class AoiTranslationLanguageActivity extends BaseAoiSettingsActivit
 
     @Override
     protected void onCreateSettingsView(Context context) {
-        actionBar.createMenu().addItem(1, R.drawable.outline_header_search).setIsSearchField(true)
+        simpleActionBar.createMenu().addItem(1, R.drawable.outline_header_search).setIsSearchField(true)
                 .setActionBarMenuItemSearchListener(new ActionBarMenuItem.ActionBarMenuItemSearchListener() {
                     @Override
                     public void onSearchCollapse() {

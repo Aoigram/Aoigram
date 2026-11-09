@@ -10,9 +10,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
-import androidx.core.view.WindowInsetsCompat;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -20,6 +18,7 @@ import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
+import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.LayoutHelper;
@@ -55,20 +54,15 @@ public final class AoiCrashLogsActivity extends BaseAoiSettingsActivity {
         emptyView.title.setText(getString(R.string.NoCrashLogs));
         emptyView.subtitle.setText(getString(R.string.NoCrashLogsInfo));
         emptyView.showProgress(false, false);
-        emptyView.setPadding(0, listView.getPaddingTop(), 0, listView.getPaddingBottom());
-        contentView.addView(emptyView, 0, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        emptyView.setPadding(0, mSystemInsets.top + ActionBar.getCurrentActionBarHeight(), 0, mSystemInsets.bottom);
+        contentView.addView(emptyView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
         listView.setEmptyView(emptyView);
         return view;
     }
 
-    @NonNull
     @Override
-    protected WindowInsetsCompat onApplyWindowInsets(@NonNull View view, @NonNull WindowInsetsCompat insets) {
-        WindowInsetsCompat result = super.onApplyWindowInsets(view, insets);
-        if (emptyView != null) {
-            emptyView.setPadding(0, listView.getPaddingTop(), 0, listView.getPaddingBottom());
-        }
-        return result;
+    public void onInsets(int left, int top, int right, int bottom) {
+        emptyView.setPadding(0, top + ActionBar.getCurrentActionBarHeight(), 0, bottom);
     }
 
     @Override

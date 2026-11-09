@@ -3,14 +3,7 @@ package nu.gpu.aoigram.settings;
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.LocaleController.getString;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -22,23 +15,17 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
-import org.telegram.messenger.SharedConfig;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
-import org.telegram.ui.ChatActivity;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.ColoredImageSpan;
-import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.EditTextBoldCursor;
 import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
@@ -47,10 +34,6 @@ import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
 import org.telegram.ui.Components.UniversalRecyclerView;
-import org.telegram.ui.Components.blur3.DownscaleScrollableNoiseSuppressor;
-import org.telegram.ui.Components.blur3.ViewGroupPartRenderer;
-import org.telegram.ui.Components.blur3.capture.IBlur3Capture;
-import org.telegram.utils.glass.source.GlassSourceRenderNode;
 
 import java.util.ArrayList;
 
@@ -63,69 +46,18 @@ public abstract class BaseAoiSettingsActivity extends BaseFragment {
     protected SizeNotifierFrameLayout contentView;
     protected UniversalRecyclerView listView;
 
-    private View actionBarBackground;
-    private boolean actionBarVisible;
-    private ValueAnimator actionBarVisibleAnimator;
-    private int navigationBarHeight;
     private String initialItemKey;
     private final SparseBooleanArray expandedGroups = new SparseBooleanArray();
 
-    private final DownscaleScrollableNoiseSuppressor scrollableViewNoiseSuppressor;
-    private final GlassSourceRenderNode iBlur3SourceGlassFrosted;
-    private IBlur3Capture iBlur3Capture;
-    private final ArrayList<RectF> iBlur3Positions = new ArrayList<>();
-    private final RectF iBlur3PositionActionBar = new RectF();
-
-    protected BaseAoiSettingsActivity() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            scrollableViewNoiseSuppressor = new DownscaleScrollableNoiseSuppressor();
-            iBlur3SourceGlassFrosted = new GlassSourceRenderNode(null);
-        } else {
-            scrollableViewNoiseSuppressor = null;
-            iBlur3SourceGlassFrosted = null;
-        }
-        iBlur3Positions.add(iBlur3PositionActionBar);
+    @Override
+    protected boolean useSimpleActionBar() {
+        return true;
     }
 
     @Override
     public View createView(Context context) {
+        setHasOwnBackground(true);
         contentView = new SizeNotifierFrameLayout(context) {
-            @Override
-            protected void dispatchDraw(Canvas canvas) {
-                blur3InvalidateBlur();
-
-                int width = getMeasuredWidth();
-                int height = getMeasuredHeight();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !iBlur3SourceGlassFrosted.inRecording()) {
-                    Canvas recordingCanvas = iBlur3SourceGlassFrosted.beginRecording(width, height);
-                    recordingCanvas.drawColor(getThemedColor(Theme.key_windowBackgroundWhite));
-                    if (SharedConfig.chatBlurEnabled()) {
-                        scrollableViewNoiseSuppressor.draw(recordingCanvas, DownscaleScrollableNoiseSuppressor.DRAW_FROSTED_GLASS);
-                    }
-                    iBlur3SourceGlassFrosted.endRecording();
-                }
-                super.dispatchDraw(canvas);
-                AndroidUtilities.drawNavigationBarProtection(canvas, this, getThemedColor(Theme.key_windowBackgroundWhite), navigationBarHeight);
-            }
-
-            @Override
-            public void drawBlurRect(Canvas canvas, float y, Rect rect, Paint blurScrimPaint, boolean top) {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || !SharedConfig.chatBlurEnabled()) {
-                    canvas.drawRect(rect, blurScrimPaint);
-                    return;
-                }
-
-                canvas.save();
-                canvas.translate(0, -y);
-                iBlur3SourceGlassFrosted.draw(canvas, rect.left, rect.top + y, rect.right, rect.bottom + y);
-                canvas.restore();
-
-                int oldScrimAlpha = blurScrimPaint.getAlpha();
-                blurScrimPaint.setAlpha(ChatActivity.ACTION_BAR_BLUR_ALPHA);
-                canvas.drawRect(rect, blurScrimPaint);
-                blurScrimPaint.setAlpha(oldScrimAlpha);
-            }
-
             @Override
             public void updateColors() {
                 super.updateColors();
@@ -133,79 +65,41 @@ public abstract class BaseAoiSettingsActivity extends BaseFragment {
             }
         };
 
-        actionBar.setBackButtonImage(R.drawable.ic_ab_back);
-        actionBar.setAllowOverlayTitle(true);
-        actionBar.setUseContainerForTitles();
-        actionBar.setTitle(getActionBarTitle());
-        actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
+        simpleActionBar.setBackButtonImage(parentLayout.isRightLayout() ? R.drawable.ic_ab_close : R.drawable.ic_ab_back);
+        simpleActionBar.setTitle(getActionBarTitle());
+        simpleActionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
-                if (id == -1) {
+                if (id == -1 && onBackPressed(true)) {
                     finishFragment();
                 }
             }
         });
-        actionBar.setAddToContainer(false);
-        actionBar.setOccupyStatusBar(true);
-        actionBar.setBackgroundColor(Color.TRANSPARENT);
-        actionBar.setBackground(null);
 
         onCreateSettingsView(context);
 
         listView = new UniversalRecyclerView(this, this::fillItems, this::onItemClick, this::onItemLongClick);
-        listView.adapter.setApplyBackground(false);
         listView.setSections();
-        listView.setPadding(0, getListTopPadding(), 0, 0);
-        listView.setClipToPadding(false);
+        listView.setSectionsDrawBackground(true);
         listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                updateActionBarVisible();
                 if (listView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING) {
                     AndroidUtilities.hideKeyboard(fragmentView);
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    scrollableViewNoiseSuppressor.onScrolled(dx, dy);
-                }
-                blur3InvalidateBlur();
             }
         });
-        iBlur3Capture = new ViewGroupPartRenderer(listView, contentView, listView::drawChild);
-        listView.addEdgeEffectListener(() -> listView.postOnAnimation(this::blur3InvalidateBlur));
         contentView.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.FILL));
 
-        actionBarBackground = new View(context) {
-            private final Paint blurScrimPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-            @Override
-            protected void onDraw(@NonNull Canvas canvas) {
-                int top = actionBar.getHeight();
-                AndroidUtilities.rectTmp2.set(0, 0, getMeasuredWidth(), top);
-                blurScrimPaint.setColor(getThemedColor(Theme.key_actionBarDefault));
-                contentView.drawBlurRect(canvas, 0, AndroidUtilities.rectTmp2, blurScrimPaint, true);
-                if (getParentLayout() != null) {
-                    getParentLayout().drawHeaderShadow(canvas, top);
-                }
-            }
-        };
-        contentView.addView(actionBarBackground, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 200, Gravity.TOP));
-        contentView.addView(actionBar, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.FILL_HORIZONTAL | Gravity.TOP));
-
         applyInitialItem();
-        updateActionBarVisible(true, false);
         updateColors();
 
-        ViewCompat.setOnApplyWindowInsetsListener(contentView, this::onApplyWindowInsets);
         return fragmentView = contentView;
     }
 
     @Override
-    public void onFragmentDestroy() {
-        if (actionBarVisibleAnimator != null) {
-            actionBarVisibleAnimator.cancel();
-            actionBarVisibleAnimator = null;
-        }
-        super.onFragmentDestroy();
+    protected RecyclerListView getListViewForSimpleGlass() {
+        return listView;
     }
 
     @Override
@@ -354,14 +248,6 @@ public abstract class BaseAoiSettingsActivity extends BaseFragment {
     protected void updateCustomColors() {
     }
 
-    protected boolean hasCollapsingHeader() {
-        return false;
-    }
-
-    protected int getListTopPadding() {
-        return hasCollapsingHeader() ? dp(12) : ActionBar.getCurrentActionBarHeight();
-    }
-
     @Nullable
     public BaseAoiSettingsActivity setInitialItemKey(@Nullable String itemKey) {
         initialItemKey = itemKey;
@@ -400,86 +286,13 @@ public abstract class BaseAoiSettingsActivity extends BaseFragment {
         if (contentView == null) {
             return;
         }
-        contentView.setBackgroundColor(getThemedColor(Theme.key_windowBackgroundGray));
-        actionBar.setTitleColor(getThemedColor(Theme.key_windowBackgroundWhiteBlackText));
-        actionBar.setItemsColor(getThemedColor(Theme.key_windowBackgroundWhiteBlackText), false);
         updateCustomColors();
-        actionBarBackground.invalidate();
         listView.invalidate();
-    }
-
-    protected boolean shouldShowActionBarBackground() {
-        if (hasCollapsingHeader()) {
-            if (listView.getChildCount() > 0) {
-                View firstChild = listView.getChildAt(0);
-                return listView.getChildAdapterPosition(firstChild) > 0 || firstChild.getY() + firstChild.getHeight() < actionBar.getHeight();
-            }
-            return false;
-        } else {
-            return listView.canScrollVertically(-1);
-        }
-    }
-
-    protected final void updateActionBarVisible() {
-        updateActionBarVisible(false, true);
-    }
-
-    private void updateActionBarVisible(boolean force, boolean animated) {
-        boolean visible = shouldShowActionBarBackground();
-        if (actionBarVisible == visible && !force) {
-            return;
-        }
-
-        actionBarVisible = visible;
-        if (actionBarVisibleAnimator != null) {
-            actionBarVisibleAnimator.cancel();
-            actionBarVisibleAnimator = null;
-        }
-        if (!animated) {
-            actionBar.getTitlesContainer().setAlpha(hasCollapsingHeader() && !visible ? 0.0f : 1.0f);
-            actionBarBackground.setAlpha(visible ? 1.0f : 0.0f);
-        } else {
-            actionBarVisibleAnimator = ValueAnimator.ofFloat(actionBarBackground.getAlpha(), visible ? 1.0f : 0.0f);
-            actionBarVisibleAnimator.addUpdateListener(animator -> {
-                float progress = (float) animator.getAnimatedValue();
-                if (hasCollapsingHeader()) {
-                    actionBar.getTitlesContainer().setAlpha(progress);
-                }
-                actionBarBackground.setAlpha(progress);
-            });
-            actionBarVisibleAnimator.setInterpolator(CubicBezierInterpolator.EASE_OUT_QUINT);
-            actionBarVisibleAnimator.setDuration(420);
-            actionBarVisibleAnimator.start();
-        }
-    }
-
-    private void blur3InvalidateBlur() {
-        if (fragmentView == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            return;
-        }
-
-        int additionalList = dp(48);
-        iBlur3PositionActionBar.set(0, -additionalList, fragmentView.getMeasuredWidth(), actionBar.getMeasuredHeight() + additionalList);
-        scrollableViewNoiseSuppressor.setupRenderNodes(iBlur3Positions, 1);
-        scrollableViewNoiseSuppressor.invalidateResultRenderNodes(iBlur3Capture, fragmentView.getMeasuredWidth(), fragmentView.getMeasuredHeight());
-    }
-
-    @NonNull
-    protected WindowInsetsCompat onApplyWindowInsets(@NonNull View view, @NonNull WindowInsetsCompat insets) {
-        Insets systemInsets = AndroidUtilities.getDefaultWindowInsets(insets, false);
-        navigationBarHeight = systemInsets.bottom;
-        listView.setPadding(0, systemInsets.top + getListTopPadding(), 0, navigationBarHeight);
-        return WindowInsetsCompat.CONSUMED;
     }
 
     @Override
     public boolean isSupportEdgeToEdge() {
         return true;
-    }
-
-    @Override
-    public boolean drawEdgeNavigationBar() {
-        return false;
     }
 
     protected record Option(BoolConfig config, @StringRes int titleResId) {}

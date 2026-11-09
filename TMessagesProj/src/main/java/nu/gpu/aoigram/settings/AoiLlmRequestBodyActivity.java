@@ -35,8 +35,9 @@ import org.json.JSONObject;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBar;
-import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.AlertDialog;
+import org.telegram.ui.ActionBar.SimpleActionBarDoneButton;
+import org.telegram.ui.ActionBar.SimpleActionBarMenu;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.EditTextBoldCursor;
@@ -45,6 +46,7 @@ import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
 import org.telegram.ui.recyclerview.LinearSmoothScrollerCustom;
 import org.telegram.utils.code.highlight.CodeHighlighting;
+import org.telegram.utils.glass.BaseFragmentSimpleGlass;
 
 import java.util.ArrayList;
 
@@ -107,6 +109,18 @@ public final class AoiLlmRequestBodyActivity extends BaseAoiSettingsActivity {
         defaultText = members(defaults);
         initialText = settings.body == null ? defaultText : members(JsonParser.parseString(settings.body).getAsJsonObject());
 
+        SimpleActionBarMenu menu = simpleActionBar.createMenu();
+        menu.addItem(1, R.drawable.outline_header_reset).setContentDescription(getString(R.string.LlmRestoreDefault));
+        SimpleActionBarDoneButton doneButton = simpleActionBar.createDoneButton(2, getString(R.string.Save));
+        simpleActionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
+            @Override
+            public void onItemClick(int id) {
+                if (id == 1) editor.setText(defaultText);
+                else if (id == 2) save();
+                else if (id == -1 && onBackPressed(true)) close();
+            }
+        });
+
         code = new CodeView(context);
         headView = codeText(context);
         tailView = codeText(context);
@@ -122,6 +136,7 @@ public final class AoiLlmRequestBodyActivity extends BaseAoiSettingsActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             public void afterTextChanged(Editable text) {
+                doneButton.setActive(!initialText.contentEquals(text), true);
                 updateHead();
                 code.invalidate();
                 AndroidUtilities.cancelRunOnUIThread(highlight);
@@ -139,18 +154,6 @@ public final class AoiLlmRequestBodyActivity extends BaseAoiSettingsActivity {
         responseView.setTextIsSelectable(true);
         response.addView(statusView, LayoutHelper.createLinear(-1, -2));
         response.addView(responseView, LayoutHelper.createLinear(-1, -2));
-
-        ActionBarMenu menu = actionBar.createMenu();
-        menu.addItem(1, R.drawable.outline_header_reset).setContentDescription(getString(R.string.LlmRestoreDefault));
-        menu.addItemWithWidth(2, R.drawable.ic_ab_done, dp(56), getString(R.string.Done));
-        actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
-            @Override
-            public void onItemClick(int id) {
-                if (id == 1) editor.setText(defaultText);
-                else if (id == 2) save();
-                else if (id == -1 && onBackPressed(true)) close();
-            }
-        });
     }
 
     private TextView codeText(Context context) {
@@ -185,10 +188,10 @@ public final class AoiLlmRequestBodyActivity extends BaseAoiSettingsActivity {
     }
 
     @Override
-    protected @NonNull WindowInsetsCompat onApplyWindowInsets(@NonNull View view, @NonNull WindowInsetsCompat insets) {
-        super.onApplyWindowInsets(view, insets);
-        int bottom = Math.max(AndroidUtilities.getDefaultWindowInsets(insets, false).bottom, insets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
-        listView.setPadding(0, listView.getPaddingTop(), 0, bottom);
+    public WindowInsetsCompat onInsetsInternal(@NonNull View view, @NonNull WindowInsetsCompat insets) {
+        super.onInsetsInternal(view, insets);
+        int imeBottom = Math.max(0, insets.getInsets(WindowInsetsCompat.Type.ime()).bottom - mSystemInsets.bottom);
+        BaseFragmentSimpleGlass.setListViewParams(listView, mSystemInsets.top, mSystemInsets.bottom, ActionBar.getCurrentActionBarHeight(), imeBottom);
         return WindowInsetsCompat.CONSUMED;
     }
 

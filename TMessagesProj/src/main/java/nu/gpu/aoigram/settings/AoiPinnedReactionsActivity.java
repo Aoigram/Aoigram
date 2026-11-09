@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +23,6 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_stars;
-import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.Bulletin;
@@ -93,12 +91,6 @@ public final class AoiPinnedReactionsActivity extends BaseAoiSettingsActivity im
             public void onTabAnimationUpdate(boolean manual) {
                 tabs.setSelected(getPositionAnimated());
             }
-
-            @Override
-            protected void onScrollEnd() {
-                super.onScrollEnd();
-                updateActionBarVisible();
-            }
         };
         pager.setAdapter(new ViewPagerFixed.Adapter() {
             @Override
@@ -141,16 +133,10 @@ public final class AoiPinnedReactionsActivity extends BaseAoiSettingsActivity im
             closePickers();
             pager.scrollToPosition(index);
         });
-        actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
-            @Override
-            public void onItemClick(int id) {
-                if (id == -1 && onBackPressed(true)) finishFragment();
-            }
-        });
         Bulletin.addDelegate(this, new Bulletin.Delegate() {
             @Override
             public int getBottomOffset(int tag) {
-                return listView.getPaddingBottom() + pages[pager.getCurrentPosition()].listView.getPaddingBottom();
+                return getBottomInset() + pages[pager.getCurrentPosition()].listView.getPaddingBottom();
             }
         });
     }
@@ -188,14 +174,6 @@ public final class AoiPinnedReactionsActivity extends BaseAoiSettingsActivity im
     private void addStarToggle(ArrayList<UItem> items) {
         items.add(asConfigCheck(AoiConfig.hideStarReactionChannels, R.string.HideStarReaction));
         items.add(UItem.asShadow(getString(R.string.HideStarReactionInfo)));
-    }
-
-    @Override
-    protected boolean shouldShowActionBarBackground() {
-        UniversalRecyclerView pageList = pages[pager.getCurrentPosition()].listView;
-        if (pageList.getChildCount() == 0) return false;
-        View firstRow = pageList.layoutManager.findViewByPosition(0);
-        return firstRow == null || pageList.layoutManager.getDecoratedTop(firstRow) < pageList.getPaddingTop();
     }
 
     private void closePickers() {
@@ -239,12 +217,10 @@ public final class AoiPinnedReactionsActivity extends BaseAoiSettingsActivity im
         return pager.getCurrentPosition() == 0 && onBackPressed(true);
     }
 
-    @NonNull
     @Override
-    protected WindowInsetsCompat onApplyWindowInsets(@NonNull View view, @NonNull WindowInsetsCompat insets) {
-        super.onApplyWindowInsets(view, insets);
-        Insets systemInsets = AndroidUtilities.getDefaultWindowInsets(insets, false);
-        int keyboardInset = Math.max(0, insets.getInsets(WindowInsetsCompat.Type.ime()).bottom - systemInsets.bottom);
+    public WindowInsetsCompat onInsetsInternal(@NonNull View view, @NonNull WindowInsetsCompat insets) {
+        super.onInsetsInternal(view, insets);
+        int keyboardInset = Math.max(0, insets.getInsets(WindowInsetsCompat.Type.ime()).bottom - mSystemInsets.bottom);
         for (Page page : pages) {
             page.keyboardInset = keyboardInset;
             page.updateBottomLayout();
@@ -310,13 +286,12 @@ public final class AoiPinnedReactionsActivity extends BaseAoiSettingsActivity im
             updatePreview(false);
             listView = new UniversalRecyclerView(context, currentAccount, classGuid, this::fillItems, this::onItemClick,
                     AoiPinnedReactionsActivity.this::onItemLongClick, getResourceProvider());
-            listView.adapter.setApplyBackground(false);
             listView.setSections();
+            listView.setSectionsDrawBackground(true);
             listView.setClipToPadding(false);
             listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    if (pager.getCurrentView() == Page.this) updateActionBarVisible();
                     if (listView.scrollingByUser) AndroidUtilities.hideKeyboard(Page.this);
                 }
             });
@@ -572,7 +547,6 @@ public final class AoiPinnedReactionsActivity extends BaseAoiSettingsActivity im
         }
 
         private void updateColors() {
-            setBackgroundColor(getThemedColor(Theme.key_windowBackgroundGray));
             editor.setBackgroundColor(getThemedColor(Theme.key_windowBackgroundWhite));
             editor.setTextColor(getThemedColor(Theme.key_chat_messagePanelText));
             editor.setCursorColor(getThemedColor(Theme.key_chat_messagePanelCursor));
