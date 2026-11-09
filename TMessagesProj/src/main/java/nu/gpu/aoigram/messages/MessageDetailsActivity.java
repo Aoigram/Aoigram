@@ -13,6 +13,7 @@ import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.Layout;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -64,6 +65,7 @@ import java.util.Objects;
 import nu.gpu.aoigram.config.AoiConfig;
 import nu.gpu.aoigram.profile.PeerIdDc;
 import nu.gpu.aoigram.settings.BaseAoiSettingsActivity;
+import nu.gpu.aoigram.typeface.AppleLogoSpan;
 
 public final class MessageDetailsActivity extends BaseAoiSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
 
@@ -763,7 +765,9 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
             boolean text = cell.text = item.id == R.string.MessageDetailsText;
             ((ViewGroup.MarginLayoutParams) cell.valueTextView.getLayoutParams()).rightMargin = dp(text ? 41 : 21);
             cell.setExpanded(item.checked, false);
-            cell.setTextAndValue(item.text, item.subtext, divider);
+            SpannableString value = new SpannableString(item.subtext);
+            AppleLogoSpan.apply(value);
+            cell.setTextAndValue(item.text, value, divider);
             cell.updateColors();
             cell.arrowView.setColorFilter(Theme.getColor(Theme.key_windowBackgroundWhiteBlueText, cell.resourcesProvider));
         }
