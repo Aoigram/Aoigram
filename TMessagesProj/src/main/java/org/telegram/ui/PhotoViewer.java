@@ -357,7 +357,7 @@ import nu.gpu.aoigram.typeface.Typefaces;
 @SuppressWarnings("unchecked")
 @OptIn(markerClass = UnstableApi.class)
 public class PhotoViewer implements NotificationCenter.NotificationCenterDelegate, GestureDetector2.OnGestureListener, GestureDetector2.OnDoubleTapListener, FactorAnimator.Target {
-    private static final int gallery_menu_copy_photo = 1000;
+    private static final int gallery_menu_copy_photo = 99;
     private final InputTranslation aoiInputTranslation = new InputTranslation();
     private TranslationTask aoiPhotoTranslation;
 

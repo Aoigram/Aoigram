@@ -366,7 +366,7 @@ import nu.gpu.aoigram.profile.RegistrationDate;
 import nu.gpu.aoigram.tabs.MainTabs;
 
 public class ProfileActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate, SharedMediaLayout.SharedMediaPreloaderDelegate, ImageUpdater.ImageUpdaterDelegate, SharedMediaLayout.Delegate, MainTabsActivity.TabFragmentDelegate {
-    private final static int add_to_folder = 100;
+    private final static int add_to_folder = 99;
 
     private MainTabsActivityController mainTabsActivityController;
 
