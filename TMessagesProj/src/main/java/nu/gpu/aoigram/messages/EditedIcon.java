@@ -37,7 +37,7 @@ public final class EditedIcon {
     }
 
     public static String describe(CharSequence text) {
-        return text.toString().replace(PLACEHOLDER, getString(R.string.EditedMessage) + " ");
+        return String.valueOf(text).replace(PLACEHOLDER, getString(R.string.EditedMessage) + " ");
     }
 
     private static SpannableString create(boolean draw) {
