@@ -137,8 +137,28 @@ public abstract class BaseAoiSettingsActivity extends BaseFragment {
         }
         boolean expanded = expandedGroups.get(id);
         UItem group = ExpandableSettingsCell.Factory.group(id, iconResId, getString(titleResId), enabled, options.length, expanded, view -> {
-            expandedGroups.put(id, !expandedGroups.get(id));
+            boolean expand = !expandedGroups.get(id);
+            expandedGroups.put(id, expand);
+            int bottom = listView.getHeight() - listView.getPaddingBottom();
+            int sectionBottom = bottom;
+            int position = listView.getChildAdapterPosition(view);
+            for (int i = position + 1; expand && i < listView.adapter.getItemCount(); i++) {
+                if (listView.adapter.getItem(i).viewType == UniversalAdapter.VIEW_TYPE_SHADOW) {
+                    View shadow = listView.layoutManager.findViewByPosition(i);
+                    if (shadow != null) {
+                        sectionBottom = Math.min(shadow.getBottom(), bottom);
+                    }
+                    break;
+                }
+            }
             listView.adapter.update(true);
+            int top = view.getTop() - listView.getPaddingTop();
+            int dy = Math.min(sectionBottom + options.length * view.getHeight() - bottom, top);
+            if (expand && dy > 0) {
+                listView.layoutManager.scrollToPositionWithOffset(position, top - dy);
+            }
+            listView.setTranslateSelectorPosition(position);
+            AndroidUtilities.doOnPreDraw(listView, listView::updateSelector);
         });
         group.object = options;
         items.add(group);
