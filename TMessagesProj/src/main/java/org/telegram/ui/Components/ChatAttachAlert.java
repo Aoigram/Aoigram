@@ -186,6 +186,7 @@ import me.vkryl.android.animator.ListAnimator;
 import me.vkryl.android.animator.ReplaceAnimator;
 import me.vkryl.core.BitwiseUtils;
 
+import nu.gpu.aoigram.config.AoiConfig;
 import nu.gpu.aoigram.translate.InputTranslation;
 import nu.gpu.aoigram.translate.InputTranslationMenu;
 
@@ -6722,7 +6723,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
                     if (position == galleryButton) {
                         attachButton.setTextAndIcon(1, getString(R.string.ChatGallery), GlassTabView.TabAnimation.GALLERY);
                         attachButton.setTag(1);
-                        err = !checkPhotoAndCameraPermission(mContext);
+                        err = AoiConfig.disableInstantCamera.get() ? !checkPhotoAndDocumentsPermission(mContext) : !checkPhotoAndCameraPermission(mContext);
                     } else if (position == moneyButton) {
                         attachButton.setTextAndIcon(LAYOUT_TYPE_MONEY, getString(R.string.WalletAttachMoney), GlassTabView.TabAnimation.GRAM);
                         attachButton.setTag(LAYOUT_TYPE_MONEY);
