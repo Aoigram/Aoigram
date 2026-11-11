@@ -9,6 +9,7 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
+import org.telegram.utils.twidget.WidgetMedia;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public final class AoiDeveloperSettingsActivity extends BaseAoiSettingsActivity 
         items.add(asConfigCheck(AoiConfig.hideEmptyStarButton, R.string.HideEmptyStarButton));
         items.add(asConfigCheck(AoiConfig.forceCopy, R.string.ForceCopy));
         items.add(asConfigCheck(AoiConfig.allowScreenshots, R.string.AllowScreenshots));
+        items.add(asConfigCheck(AoiConfig.messageWidgets, R.string.MessageWidgets));
         items.add(UItem.asShadow(null));
         items.add(UItem.asButton(CRASH_ROW, getString(R.string.TestCrash)).red());
         items.add(UItem.asShadow(null));
@@ -57,6 +59,8 @@ public final class AoiDeveloperSettingsActivity extends BaseAoiSettingsActivity 
                     MessagesController.getInstance(account).checkPromoInfo(true);
                 }
             }
+        } else if (config == AoiConfig.messageWidgets) {
+            WidgetMedia.onKillSwitch();
         }
     }
 }

@@ -17,6 +17,8 @@ import org.telegram.messenger.Utilities;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import nu.gpu.aoigram.config.AoiConfig;
+
 /**
  * One native widget session (WidgetHost + TwidgetCore) without a View: it lives while its message
  * is near the screen, records frames on its worker and publishes immutable recorded frames (WidgetFrameNode) to UI.
@@ -257,6 +259,7 @@ public final class WidgetSandboxSession {
      * widgets off. No native session is created then, so no widget code runs in the client. Any thread.
      */
     public static boolean disabledByConfig() {
+        if (!AoiConfig.messageWidgets.get()) return true;
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
             if (UserConfig.getInstance(a).isClientActivated() && AppGlobalConfig.getInstance(a).widgetsDisabled.get()) {
                 return true;
