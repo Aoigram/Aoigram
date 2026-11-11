@@ -20,6 +20,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
@@ -43,12 +45,19 @@ import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.BaseFragment;
+import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.TextDetailCell;
 import org.telegram.ui.Components.AlertsCreator;
+import org.telegram.ui.Components.AnimatedEmojiDrawable;
+import org.telegram.ui.Components.AvatarDrawable;
+import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.RecyclerListView;
+import org.telegram.ui.Components.ScaleStateListAnimator;
+import org.telegram.ui.Components.TableView;
+import org.telegram.ui.Components.TextHelper;
 import org.telegram.ui.Components.TranslateAlert2;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
@@ -61,7 +70,10 @@ import org.telegram.ui.recyclerview.ChatListItemAnimator;
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import nu.gpu.aoigram.config.AoiConfig;
@@ -93,6 +105,8 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
     private boolean checkedFile;
     private boolean textExpanded;
     private String language;
+    private final LinkedHashMap<Long, Pack> emojiPacks = new LinkedHashMap<>();
+    private Pack stickerPack;
 
     public MessageDetailsActivity(BaseFragment parent, MessageObject message, MessageObject.GroupedMessages group, boolean protectedContent) {
         this(parent, message, group == null ? null : new ArrayList<>(group.messages), protectedContent);
@@ -150,7 +164,126 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
                 }
             }, null);
         }
+        for (TLRPC.MessageEntity entity : message.messageOwner.entities) {
+            if (entity instanceof TLRPC.TL_messageEntityCustomEmoji) {
+                AnimatedEmojiDrawable.getDocumentFetcher(currentAccount).fetchDocument(((TLRPC.TL_messageEntityCustomEmoji) entity).document_id, emoji -> addEmoji(entity.offset, emoji));
+            }
+        }
+        TLRPC.InputStickerSet stickerSet = MessageObject.getInputStickerSet(document);
+        if (stickerSet != null) {
+            loadPack(stickerPack = new Pack(), stickerSet);
+        }
         return super.onFragmentCreate();
+    }
+
+    private void addEmoji(int offset, TLRPC.Document emoji) {
+        TLRPC.InputStickerSet stickerSet = MessageObject.getInputStickerSet(emoji);
+        if (stickerSet == null) {
+            return;
+        }
+        Pack existing = emojiPacks.get(stickerSet.id);
+        if (existing != null) {
+            if (offset < existing.offset) {
+                existing.setEmoji(offset, emoji);
+                updatePacks();
+            }
+            return;
+        }
+        Pack pack = new Pack();
+        pack.setEmoji(offset, emoji);
+        emojiPacks.put(stickerSet.id, pack);
+        loadPack(pack, stickerSet);
+    }
+
+    private void loadPack(Pack pack, TLRPC.InputStickerSet stickerSet) {
+        pack.id = stickerSet.id;
+        getMediaDataController().getStickerSet(stickerSet, null, false, set -> {
+            pack.loading = false;
+            if (set != null) {
+                pack.set = set.set;
+                pack.id = set.set.id;
+            }
+            updatePacks();
+        });
+    }
+
+    private void updatePacks() {
+        if (listView != null && !isFinished) {
+            listView.adapter.update(true);
+        }
+    }
+
+    private void showPacks(CharSequence title, Collection<Pack> packs) {
+        for (Pack pack : packs) {
+            if (pack.loading) {
+                return;
+            }
+        }
+        Context context = getParentActivity();
+        BottomSheet.Builder builder = new BottomSheet.Builder(context, false, resourceProvider);
+        builder.setApplyTopPadding(false);
+        builder.setApplyBottomPadding(false);
+        BottomSheet sheet = builder.create();
+        LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        builder.setCustomView(layout);
+        TextView header = TextHelper.makeTextView(context, 20, Theme.key_dialogTextBlack, true, resourceProvider);
+        header.setText(title);
+        layout.addView(header, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.FILL_HORIZONTAL, 22, 18, 22, 0));
+        TableView table = new TableView(context, resourceProvider);
+        layout.addView(table, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.FILL_HORIZONTAL, 14, 18, 14, 18));
+        Utilities.Callback<String> copy = text -> {
+            AndroidUtilities.addToClipboard(text);
+            sheet.getBulletinFactory().createCopyBulletin(getString(R.string.TextCopied)).show();
+        };
+        for (Pack pack : packs) {
+            long creatorId = stickerSetCreator(pack.id);
+            TLRPC.User creator = getMessagesController().getUser(creatorId);
+            LinearLayout content = new LinearLayout(context);
+            content.setGravity(Gravity.CENTER_VERTICAL);
+            content.setPadding(dp(12.66f), dp(9.33f), dp(12.66f), dp(9.33f));
+            LinearLayout lines = new LinearLayout(context);
+            lines.setOrientation(LinearLayout.VERTICAL);
+            if (creator != null) {
+                Runnable openProfile = () -> {
+                    sheet.dismiss();
+                    presentFragment(ProfileActivity.of(creatorId));
+                };
+                BackupImageView avatar = new BackupImageView(context);
+                avatar.setRoundRadius(dp(12));
+                avatar.setForUserOrChat(creator, new AvatarDrawable(creator));
+                avatar.setOnClickListener(v -> openProfile.run());
+                ScaleStateListAnimator.apply(avatar);
+                content.addView(avatar, LayoutHelper.createLinear(24, 24, 0f, 0f, 8f, 0f));
+                addPackLine(lines, UserObject.getUserName(creator), 14, Theme.key_featuredStickers_addButton, openProfile);
+                String username = UserObject.getPublicUsername(creator);
+                if (username != null) {
+                    addPackLine(lines, "@" + username, 13, Theme.key_windowBackgroundWhiteGrayText2, () -> copy.run("@" + username));
+                }
+            }
+            if (creatorId > 0) {
+                String id = Long.toString(creatorId);
+                addPackLine(lines, id, creator == null ? 14 : 13, creator == null ? Theme.key_windowBackgroundWhiteBlackText : Theme.key_windowBackgroundWhiteGrayText2, () -> copy.run(id));
+            }
+            content.addView(lines, LayoutHelper.createLinear(0, LayoutHelper.WRAP_CONTENT, 1f));
+            TextView name = (TextView) table.addRowUnpadded(pack.name(), content).getChildAt(0);
+            name.setMaxWidth(dp(160));
+            name.setGravity(Gravity.CENTER_VERTICAL);
+            name.setText(Emoji.replaceEmoji(pack.name(), name.getPaint().getFontMetricsInt(), false));
+            NotificationCenter.listenEmojiLoading(name);
+        }
+        showDialog(sheet);
+    }
+
+    private void addPackLine(LinearLayout lines, String text, int size, int colorKey, Runnable onClick) {
+        TextView view = TextHelper.makeTextView(lines.getContext(), size, colorKey, false, resourceProvider);
+        view.setSingleLine(true);
+        view.setEllipsize(TextUtils.TruncateAt.END);
+        view.setText(Emoji.replaceEmoji(text, view.getPaint().getFontMetricsInt(), false));
+        NotificationCenter.listenEmojiLoading(view);
+        view.setOnClickListener(v -> onClick.run());
+        ScaleStateListAnimator.apply(view);
+        lines.addView(view, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT));
     }
 
     @Override
@@ -248,6 +381,13 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
     }
 
     @Override
+    public View createView(Context context) {
+        View view = super.createView(context);
+        listView.setSectionsDrawingMode(RecyclerListView.SectionsDrawingMode.FULL_BACKGROUND);
+        return view;
+    }
+
+    @Override
     protected void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
         items.add(UItem.asButton(R.string.ViewAsJson, R.drawable.msg_stories_caption, getString(R.string.ViewAsJson)).accent());
         items.add(UItem.asShadow(null));
@@ -303,6 +443,26 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
             if (languageName != null) {
                 add(items, R.string.Language, languageName + " (" + language + ")");
             }
+            if (!emojiPacks.isEmpty()) {
+                StringBuilder packs = new StringBuilder();
+                ArrayList<TLRPC.MessageEntity> entities = new ArrayList<>();
+                for (Pack pack : emojiPacks.values()) {
+                    String emoticon = MessageObject.findAnimatedEmojiEmoticon(pack.emoji.document);
+                    packs.append(packs.length() == 0 ? "" : "\n");
+                    pack.emoji.offset = packs.length();
+                    pack.emoji.length = emoticon.length();
+                    entities.add(pack.emoji);
+                    packs.append(emoticon).append(' ').append(pack.name());
+                }
+                UItem item = DetailFactory.of(R.string.MessageDetailsEmojiPacks, getString(emojiPacks.size() == 1 ? R.string.MessageDetailsEmojiPack : R.string.MessageDetailsEmojiPacks), packs);
+                item.object = entities;
+                items.add(item);
+            }
+            items.add(UItem.asShadow(null));
+        }
+
+        if (stickerPack != null) {
+            add(items, R.string.MessageDetailsStickerPack, stickerPack.name());
             items.add(UItem.asShadow(null));
         }
 
@@ -330,24 +490,6 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
         }
         if (document != null) {
             add(items, R.string.MessageDetailsMime, document.mime_type);
-            TLRPC.InputStickerSet stickerSet = MessageObject.getInputStickerSet(document);
-            long stickerSetId = stickerSet == null ? 0 : stickerSet.id;
-            if (stickerSet instanceof TLRPC.TL_inputStickerSetShortName) {
-                TLRPC.TL_messages_stickerSet cachedSet = getMediaDataController().getStickerSetByName(stickerSet.short_name);
-                stickerSetId = cachedSet == null ? 0 : cachedSet.set.id;
-            }
-            if (stickerSetId != 0) {
-                long creatorId = stickerSetId >> 32;
-                if (((stickerSetId >> 16) & 0xff) == 0x3f) {
-                    creatorId |= 0x80000000L;
-                }
-                if (((stickerSetId >> 24) & 0xff) != 0) {
-                    creatorId += 0x100000000L;
-                }
-                if (creatorId > 0) {
-                    addPeer(items, R.string.MessageDetailsStickerCreator, creatorId);
-                }
-            }
             for (TLRPC.DocumentAttribute attribute : document.attributes) {
                 if (attribute instanceof TLRPC.TL_documentAttributeVideo || attribute instanceof TLRPC.TL_documentAttributeImageSize) {
                     addDimensions(items, attribute.w, attribute.h);
@@ -558,6 +700,17 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
         }
     }
 
+    private static long stickerSetCreator(long stickerSetId) {
+        long creatorId = stickerSetId >> 32;
+        if (((stickerSetId >> 16) & 0xff) == 0x3f) {
+            creatorId |= 0x80000000L;
+        }
+        if (((stickerSetId >> 24) & 0xff) != 0) {
+            creatorId += 0x100000000L;
+        }
+        return creatorId;
+    }
+
     private static void addBitrate(ArrayList<UItem> items, int title, double bitrate) {
         if (bitrate > 0) {
             add(items, title, number(bitrate / 1000.0) + " kb/s");
@@ -638,6 +791,10 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
         } else if (item.id == R.string.MessageDetailsText && ((DetailCell) view).arrowView.getVisibility() == View.VISIBLE) {
             item.checked = textExpanded = !textExpanded;
             ((DetailCell) view).setExpanded(textExpanded, true);
+        } else if (item.id == R.string.MessageDetailsEmojiPacks) {
+            showPacks(item.text, emojiPacks.values());
+        } else if (item.id == R.string.MessageDetailsStickerPack) {
+            showPacks(item.text, Collections.singletonList(stickerPack));
         } else if (item.dialogId != 0) {
             presentFragment(ProfileActivity.of(item.dialogId));
         } else if (item.id == R.string.MessageDetailsPath && !localFile.getName().endsWith(".enc")) {
@@ -677,6 +834,25 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
     @Override
     protected void updateCustomColors() {
         listView.adapter.notifyDataSetChanged();
+    }
+
+    private static final class Pack {
+        private int offset;
+        private TLRPC.TL_messageEntityCustomEmoji emoji;
+        private long id;
+        private TLRPC.StickerSet set;
+        private boolean loading = true;
+
+        private void setEmoji(int offset, TLRPC.Document document) {
+            this.offset = offset;
+            emoji = new TLRPC.TL_messageEntityCustomEmoji();
+            emoji.document_id = document.id;
+            emoji.document = document;
+        }
+
+        private String name() {
+            return set != null ? set.title : getString(loading ? R.string.Loading : R.string.Unavailable);
+        }
     }
 
     private static final class DetailCell extends TextDetailCell {
