@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.media.AudioFormat;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
@@ -29,6 +30,7 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.DialogObject;
+import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FlagSecureReason;
 import org.telegram.messenger.LanguageDetector;
@@ -295,6 +297,7 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
 
         if (!TextUtils.isEmpty(owner.message)) {
             UItem text = DetailFactory.of(R.string.MessageDetailsText, getString(message.caption != null ? R.string.Caption : R.string.MessageDetailsText), owner.message);
+            text.object = owner.entities;
             items.add(text.setChecked(textExpanded));
             String languageName = TranslateAlert2.languageNameCapital(language);
             if (languageName != null) {
@@ -759,6 +762,7 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
             return new DetailCell(context, resourcesProvider);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void bindView(View view, UItem item, boolean divider, UniversalAdapter adapter, UniversalRecyclerView listView) {
             DetailCell cell = (DetailCell) view;
@@ -767,6 +771,9 @@ public final class MessageDetailsActivity extends BaseAoiSettingsActivity implem
             cell.setExpanded(item.checked, false);
             SpannableString value = new SpannableString(item.subtext);
             AppleLogoSpan.apply(value);
+            Paint.FontMetricsInt fontMetrics = cell.valueTextView.getPaint().getFontMetricsInt();
+            Emoji.replaceEmoji(value, fontMetrics, false);
+            MessageObject.replaceAnimatedEmoji(value, (ArrayList<TLRPC.MessageEntity>) item.object, fontMetrics);
             cell.setTextAndValue(item.text, value, divider);
             cell.updateColors();
             cell.arrowView.setColorFilter(Theme.getColor(Theme.key_windowBackgroundWhiteBlueText, cell.resourcesProvider));
