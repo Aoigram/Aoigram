@@ -20,6 +20,7 @@
     <string name="ForceCopy">복사 및 저장 허용</string>
     <string name="ForwardsRestricted">이 채팅방에서는 전달이 허용되지 않습니다.</string>
     <string name="AllowScreenshots">스크린샷 허용</string>
+    <string name="MessageWidgets">메시지 위젯</string>
     <string name="ShowFullNumbers">숫자 전체 표시</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">시간에 초 단위 표시</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">생성 일시</string>
     <string name="MessageDetailsFileSize">파일 크기</string>
     <string name="MessageDetailsMime">MIME 유형</string>
-    <string name="MessageDetailsStickerCreator">스티커 팩 제작자</string>
+    <string name="MessageDetailsStickerPack">스티커 팩</string>
+    <string name="MessageDetailsEmojiPack">이모지 팩</string>
+    <string name="MessageDetailsEmojiPacks">이모지 팩</string>
     <string name="MessageDetailsCodec">코덱</string>
     <string name="MessageDetailsTitle">제목</string>
     <string name="MessageDetailsArtist">아티스트</string>

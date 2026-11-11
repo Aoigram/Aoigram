@@ -20,6 +20,7 @@
     <string name="ForceCopy">Cho phép sao chép và lưu</string>
     <string name="ForwardsRestricted">Không được phép chuyển tiếp trong cuộc trò chuyện này.</string>
     <string name="AllowScreenshots">Cho phép chụp màn hình</string>
+    <string name="MessageWidgets">Tiện ích tin nhắn</string>
     <string name="ShowFullNumbers">Hiển thị số đầy đủ</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">Hiển thị thời gian có giây</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Đã tạo</string>
     <string name="MessageDetailsFileSize">Kích thước tệp</string>
     <string name="MessageDetailsMime">Loại MIME</string>
-    <string name="MessageDetailsStickerCreator">Người tạo bộ nhãn dán</string>
+    <string name="MessageDetailsStickerPack">Bộ nhãn dán</string>
+    <string name="MessageDetailsEmojiPack">Bộ emoji</string>
+    <string name="MessageDetailsEmojiPacks">Bộ emoji</string>
     <string name="MessageDetailsCodec">Codec</string>
     <string name="MessageDetailsTitle">Tiêu đề</string>
     <string name="MessageDetailsArtist">Nghệ sĩ</string>

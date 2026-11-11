@@ -20,6 +20,7 @@
     <string name="ForceCopy">اجازه کپی و ذخیره کردن</string>
     <string name="ForwardsRestricted">هدایت پیام در این چت مجاز نیست.</string>
     <string name="AllowScreenshots">اجازه ثبت اسکرین‌شات</string>
+    <string name="MessageWidgets">ابزارک‌های پیام</string>
     <string name="ShowFullNumbers">نمایش کامل اعداد</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">نمایش زمان به همراه ثانیه</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">زمان ایجاد</string>
     <string name="MessageDetailsFileSize">حجم فایل</string>
     <string name="MessageDetailsMime">نوع MIME</string>
-    <string name="MessageDetailsStickerCreator">سازنده بسته استیکر</string>
+    <string name="MessageDetailsStickerPack">بسته استیکر</string>
+    <string name="MessageDetailsEmojiPack">بسته ایموجی</string>
+    <string name="MessageDetailsEmojiPacks">بسته‌های ایموجی</string>
     <string name="MessageDetailsCodec">کدک</string>
     <string name="MessageDetailsTitle">عنوان</string>
     <string name="MessageDetailsArtist">هنرمند</string>

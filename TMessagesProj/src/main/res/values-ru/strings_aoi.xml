@@ -20,6 +20,7 @@
     <string name="ForceCopy">Разрешить копирование и сохранение</string>
     <string name="ForwardsRestricted">Пересылка в этом чате запрещена.</string>
     <string name="AllowScreenshots">Разрешить скриншоты</string>
+    <string name="MessageWidgets">Виджеты сообщений</string>
     <string name="ShowFullNumbers">Показывать точные числа</string>
     <string name="ShowFullNumbersInfo">1.2K → 1 234</string>
     <string name="FormatTimeWithSeconds">Показывать время с секундами</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Создано</string>
     <string name="MessageDetailsFileSize">Размер файла</string>
     <string name="MessageDetailsMime">MIME-тип</string>
-    <string name="MessageDetailsStickerCreator">Создатель набора стикеров</string>
+    <string name="MessageDetailsStickerPack">Набор стикеров</string>
+    <string name="MessageDetailsEmojiPack">Набор эмодзи</string>
+    <string name="MessageDetailsEmojiPacks">Наборы эмодзи</string>
     <string name="MessageDetailsCodec">Кодек</string>
     <string name="MessageDetailsTitle">Название</string>
     <string name="MessageDetailsArtist">Исполнитель</string>

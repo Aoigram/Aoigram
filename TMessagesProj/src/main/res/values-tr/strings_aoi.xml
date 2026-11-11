@@ -20,6 +20,7 @@
     <string name="ForceCopy">Kopyalamaya ve kaydetmeye izin ver</string>
     <string name="ForwardsRestricted">Bu sohbette mesaj iletmeye izin verilmiyor.</string>
     <string name="AllowScreenshots">Ekran görüntülerine izin ver</string>
+    <string name="MessageWidgets">Mesaj widget’ları</string>
     <string name="ShowFullNumbers">Tam sayıları göster</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">Saati saniyeyle göster</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Oluşturulma</string>
     <string name="MessageDetailsFileSize">Dosya boyutu</string>
     <string name="MessageDetailsMime">MIME türü</string>
-    <string name="MessageDetailsStickerCreator">Çıkartma paketi yapımcısı</string>
+    <string name="MessageDetailsStickerPack">Çıkartma paketi</string>
+    <string name="MessageDetailsEmojiPack">Emoji paketi</string>
+    <string name="MessageDetailsEmojiPacks">Emoji paketleri</string>
     <string name="MessageDetailsCodec">Kodek</string>
     <string name="MessageDetailsTitle">Başlık</string>
     <string name="MessageDetailsArtist">Sanatçı</string>

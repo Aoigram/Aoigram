@@ -20,6 +20,7 @@
     <string name="ForceCopy">允許複製與儲存</string>
     <string name="ForwardsRestricted">此聊天室不允許轉傳。</string>
     <string name="AllowScreenshots">允許螢幕截圖</string>
+    <string name="MessageWidgets">訊息小工具</string>
     <string name="ShowFullNumbers">顯示完整數字</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">時間精確到秒</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">建立時間</string>
     <string name="MessageDetailsFileSize">檔案大小</string>
     <string name="MessageDetailsMime">MIME 類型</string>
-    <string name="MessageDetailsStickerCreator">貼圖包建立者</string>
+    <string name="MessageDetailsStickerPack">貼圖包</string>
+    <string name="MessageDetailsEmojiPack">表情包</string>
+    <string name="MessageDetailsEmojiPacks">表情包</string>
     <string name="MessageDetailsCodec">編碼格式</string>
     <string name="MessageDetailsTitle">標題</string>
     <string name="MessageDetailsArtist">演出者</string>

@@ -20,6 +20,7 @@
     <string name="ForceCopy">コピーと保存を許可</string>
     <string name="ForwardsRestricted">このチャットでは転送が許可されていません。</string>
     <string name="AllowScreenshots">スクリーンショットを許可</string>
+    <string name="MessageWidgets">メッセージウィジェット</string>
     <string name="ShowFullNumbers">数値を省略せず表示</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">時刻に秒を表示</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">作成日時</string>
     <string name="MessageDetailsFileSize">ファイルサイズ</string>
     <string name="MessageDetailsMime">MIME タイプ</string>
-    <string name="MessageDetailsStickerCreator">ステッカーパック作成者</string>
+    <string name="MessageDetailsStickerPack">ステッカーパック</string>
+    <string name="MessageDetailsEmojiPack">絵文字パック</string>
+    <string name="MessageDetailsEmojiPacks">絵文字パック</string>
     <string name="MessageDetailsCodec">コーデック</string>
     <string name="MessageDetailsTitle">タイトル</string>
     <string name="MessageDetailsArtist">アーティスト</string>

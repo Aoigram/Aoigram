@@ -20,6 +20,7 @@
     <string name="ForceCopy">Izinkan menyalin dan menyimpan</string>
     <string name="ForwardsRestricted">Meneruskan pesan tidak diizinkan di obrolan ini.</string>
     <string name="AllowScreenshots">Izinkan tangkapan layar</string>
+    <string name="MessageWidgets">Widget pesan</string>
     <string name="ShowFullNumbers">Tampilkan angka lengkap</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">Format waktu dengan detik</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Dibuat</string>
     <string name="MessageDetailsFileSize">Ukuran file</string>
     <string name="MessageDetailsMime">Tipe MIME</string>
-    <string name="MessageDetailsStickerCreator">Pembuat paket stiker</string>
+    <string name="MessageDetailsStickerPack">Paket stiker</string>
+    <string name="MessageDetailsEmojiPack">Paket emoji</string>
+    <string name="MessageDetailsEmojiPacks">Paket emoji</string>
     <string name="MessageDetailsCodec">Codec</string>
     <string name="MessageDetailsTitle">Judul</string>
     <string name="MessageDetailsArtist">Artis</string>

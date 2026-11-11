@@ -20,6 +20,7 @@
     <string name="ForceCopy">Zezwalaj na kopiowanie i zapisywanie</string>
     <string name="ForwardsRestricted">Przekazywanie wiadomości na tym czacie jest niedozwolone.</string>
     <string name="AllowScreenshots">Zezwalaj na zrzuty ekranu</string>
+    <string name="MessageWidgets">Widżety wiadomości</string>
     <string name="ShowFullNumbers">Pokazuj pełne liczby</string>
     <string name="ShowFullNumbersInfo">1.2K → 1 234</string>
     <string name="FormatTimeWithSeconds">Formatuj czas z sekundami</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Utworzono</string>
     <string name="MessageDetailsFileSize">Rozmiar pliku</string>
     <string name="MessageDetailsMime">Typ MIME</string>
-    <string name="MessageDetailsStickerCreator">Twórca zestawu naklejek</string>
+    <string name="MessageDetailsStickerPack">Zestaw naklejek</string>
+    <string name="MessageDetailsEmojiPack">Zestaw emoji</string>
+    <string name="MessageDetailsEmojiPacks">Zestawy emoji</string>
     <string name="MessageDetailsCodec">Kodek</string>
     <string name="MessageDetailsTitle">Tytuł</string>
     <string name="MessageDetailsArtist">Wykonawca</string>

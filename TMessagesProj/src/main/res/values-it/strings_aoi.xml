@@ -20,6 +20,7 @@
     <string name="ForceCopy">Consenti copia e salvataggio</string>
     <string name="ForwardsRestricted">L\'inoltro non è consentito in questa chat.</string>
     <string name="AllowScreenshots">Consenti screenshot</string>
+    <string name="MessageWidgets">Widget dei messaggi</string>
     <string name="ShowFullNumbers">Mostra numeri completi</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">Mostra orario con i secondi</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Creato</string>
     <string name="MessageDetailsFileSize">Dimensione file</string>
     <string name="MessageDetailsMime">Tipo MIME</string>
-    <string name="MessageDetailsStickerCreator">Creatore set di sticker</string>
+    <string name="MessageDetailsStickerPack">Set di sticker</string>
+    <string name="MessageDetailsEmojiPack">Set di emoji</string>
+    <string name="MessageDetailsEmojiPacks">Set di emoji</string>
     <string name="MessageDetailsCodec">Codec</string>
     <string name="MessageDetailsTitle">Titolo</string>
     <string name="MessageDetailsArtist">Artista</string>

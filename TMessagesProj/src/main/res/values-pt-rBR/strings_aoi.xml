@@ -20,6 +20,7 @@
     <string name="ForceCopy">Permitir copiar e salvar</string>
     <string name="ForwardsRestricted">O encaminhamento não é permitido nesta conversa.</string>
     <string name="AllowScreenshots">Permitir capturas de tela</string>
+    <string name="MessageWidgets">Widgets de mensagens</string>
     <string name="ShowFullNumbers">Mostrar números completos</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">Formatar horário com segundos</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Criado</string>
     <string name="MessageDetailsFileSize">Tamanho do arquivo</string>
     <string name="MessageDetailsMime">Tipo MIME</string>
-    <string name="MessageDetailsStickerCreator">Criador do pacote de stickers</string>
+    <string name="MessageDetailsStickerPack">Pacote de stickers</string>
+    <string name="MessageDetailsEmojiPack">Pacote de emojis</string>
+    <string name="MessageDetailsEmojiPacks">Pacotes de emojis</string>
     <string name="MessageDetailsCodec">Codec</string>
     <string name="MessageDetailsTitle">Título</string>
     <string name="MessageDetailsArtist">Artista</string>

@@ -20,6 +20,7 @@
     <string name="ForceCopy">Kopieren und Speichern erlauben</string>
     <string name="ForwardsRestricted">Weiterleiten ist in diesem Chat nicht erlaubt.</string>
     <string name="AllowScreenshots">Screenshots erlauben</string>
+    <string name="MessageWidgets">Nachrichten-Widgets</string>
     <string name="ShowFullNumbers">Vollständige Zahlen anzeigen</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">Uhrzeit mit Sekunden anzeigen</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Erstellt</string>
     <string name="MessageDetailsFileSize">Dateigröße</string>
     <string name="MessageDetailsMime">MIME-Typ</string>
-    <string name="MessageDetailsStickerCreator">Ersteller des Stickerpakets</string>
+    <string name="MessageDetailsStickerPack">Stickerpaket</string>
+    <string name="MessageDetailsEmojiPack">Emoji-Paket</string>
+    <string name="MessageDetailsEmojiPacks">Emoji-Pakete</string>
     <string name="MessageDetailsCodec">Codec</string>
     <string name="MessageDetailsTitle">Titel</string>
     <string name="MessageDetailsArtist">Interpret</string>

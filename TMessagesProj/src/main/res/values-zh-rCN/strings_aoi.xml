@@ -20,6 +20,7 @@
     <string name="ForceCopy">允许复制和保存</string>
     <string name="ForwardsRestricted">此聊天不允许转发。</string>
     <string name="AllowScreenshots">允许截屏</string>
+    <string name="MessageWidgets">消息小组件</string>
     <string name="ShowFullNumbers">显示完整数字</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">时间精确到秒</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">创建时间</string>
     <string name="MessageDetailsFileSize">文件大小</string>
     <string name="MessageDetailsMime">MIME 类型</string>
-    <string name="MessageDetailsStickerCreator">贴纸包创建者</string>
+    <string name="MessageDetailsStickerPack">贴纸包</string>
+    <string name="MessageDetailsEmojiPack">表情包</string>
+    <string name="MessageDetailsEmojiPacks">表情包</string>
     <string name="MessageDetailsCodec">编码格式</string>
     <string name="MessageDetailsTitle">标题</string>
     <string name="MessageDetailsArtist">艺术家</string>

@@ -20,6 +20,7 @@
     <string name="ForceCopy">Дозволити копіювання та збереження</string>
     <string name="ForwardsRestricted">Пересилання в цьому чаті заборонено.</string>
     <string name="AllowScreenshots">Дозволити знімки екрана</string>
+    <string name="MessageWidgets">Віджети повідомлень</string>
     <string name="ShowFullNumbers">Показувати точні числа</string>
     <string name="ShowFullNumbersInfo">1.2K → 1 234</string>
     <string name="FormatTimeWithSeconds">Показувати час із секундами</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">Створено</string>
     <string name="MessageDetailsFileSize">Розмір файлу</string>
     <string name="MessageDetailsMime">MIME-тип</string>
-    <string name="MessageDetailsStickerCreator">Автор набору наліпок</string>
+    <string name="MessageDetailsStickerPack">Набір наліпок</string>
+    <string name="MessageDetailsEmojiPack">Набір емодзі</string>
+    <string name="MessageDetailsEmojiPacks">Набори емодзі</string>
     <string name="MessageDetailsCodec">Кодек</string>
     <string name="MessageDetailsTitle">Назва</string>
     <string name="MessageDetailsArtist">Виконавець</string>

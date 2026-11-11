@@ -20,6 +20,7 @@
     <string name="ForceCopy">السماح بالنسخ والحفظ</string>
     <string name="ForwardsRestricted">إعادة التوجيه غير مسموحة في هذه المحادثة.</string>
     <string name="AllowScreenshots">السماح بلقطات الشاشة</string>
+    <string name="MessageWidgets">أدوات الرسائل</string>
     <string name="ShowFullNumbers">إظهار الأرقام كاملة</string>
     <string name="ShowFullNumbersInfo">1.2K → 1,234</string>
     <string name="FormatTimeWithSeconds">إظهار الثواني في الوقت</string>
@@ -143,7 +144,9 @@
     <string name="MessageDetailsCreated">تاريخ الإنشاء</string>
     <string name="MessageDetailsFileSize">حجم الملف</string>
     <string name="MessageDetailsMime">نوع MIME</string>
-    <string name="MessageDetailsStickerCreator">منشئ حزمة الملصقات</string>
+    <string name="MessageDetailsStickerPack">حزمة الملصقات</string>
+    <string name="MessageDetailsEmojiPack">حزمة الرموز التعبيرية</string>
+    <string name="MessageDetailsEmojiPacks">حزم الرموز التعبيرية</string>
     <string name="MessageDetailsCodec">الترميز</string>
     <string name="MessageDetailsTitle">العنوان</string>
     <string name="MessageDetailsArtist">الفنان</string>
