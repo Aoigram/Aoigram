@@ -1203,8 +1203,10 @@ public class ReactionsLayoutInBubble {
                 tx = textDrawable.getCurrentWidth() + dp(4) * textDrawable.isNotEmpty();
             }
             if (scrimProgress > 0.0f && !isTag && scrimPreviewCounterDrawable != null && avatarsDrawable == null) {
+                // counterDrawable centers short counts in a box of at least dp(12), match it to avoid a jump
+                final float counterOffset = Math.max(0, (dp(12) - scrimPreviewCounterDrawable.getCurrentWidth()) / 2f);
                 canvas.save();
-                canvas.translate(x + dp(hasName && !drawTagDot() ? 10 : (hasName ? 9 : 8)) + dp(20) + dp(animatedEmojiDrawable != null ? 5 : 2) + Math.max(0, dp(12) - scrimPreviewCounterDrawable.getCurrentWidth()) / 2f, y + (height - dp(23)) / 2f + dp(4));
+                canvas.translate(x + dp(hasName && !drawTagDot() ? 10 : (hasName ? 9 : 8)) + dp(20) + dp(animatedEmojiDrawable != null ? 5 : 2) + counterOffset, y + (height - dp(23)) / 2f + dp(4));
                 scrimPreviewCounterDrawable.setBounds(0, 0, width, height);
                 scrimPreviewCounterDrawable.draw(canvas);
                 scrimPreviewCounterDrawable.setAlpha((int) (0xFF * alpha));

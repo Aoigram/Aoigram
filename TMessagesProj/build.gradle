@@ -117,6 +117,11 @@ android {
         }
     }
 
+    // IWidgetEngine: the widget engine's isolated process (WidgetEngineService).
+    buildFeatures {
+        aidl true
+    }
+
     lint {
         disable += ['MissingTranslation', 'ExtraTranslation', 'BlockedPrivateApi']
     }
@@ -153,7 +158,7 @@ android {
                     println "Using ccache ${ccache.absolutePath}"
                     arguments "-DANDROID_CCACHE=${ccache.absolutePath}"
                 }
-                targets 'tmessages.49'
+                targets 'tmessages.49', 'twidget'
             }
         }
     }
