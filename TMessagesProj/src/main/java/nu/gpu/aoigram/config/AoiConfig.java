@@ -102,6 +102,8 @@ public final class AoiConfig {
 
     public static final IntConfig stickerSize = register(new IntConfig("stickerSize", 80));
     public static final BoolConfig showOnlineStatus = register(new BoolConfig("showOnlineStatus", false));
+    public static final BoolConfig pullToNextChannel = register(new BoolConfig("pullToNextChannel", true));
+    public static final BoolConfig pullToNextTopic = register(new BoolConfig("pullToNextTopic", true));
     public static final BoolConfig hideShareButton = register(new BoolConfig("hideShareButton", false));
     public static final BoolConfig hideKeyboardOnScroll = register(new BoolConfig("hideKeyboardOnScroll", false));
     public static final BoolConfig hideChannelBottomBar = register(new BoolConfig("hideChannelBottomBar", false));

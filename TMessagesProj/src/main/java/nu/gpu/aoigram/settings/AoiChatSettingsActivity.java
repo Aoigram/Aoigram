@@ -29,6 +29,7 @@ public final class AoiChatSettingsActivity extends BaseAoiSettingsActivity {
     private static final int CONFIRMATIONS = 3;
     private static final int GROUP_MESSAGE_MENU = 4;
     private static final int SPEECH_TO_TEXT = 5;
+    private static final int PULL_UP_TO_SWITCH = 6;
 
     private static final Option[] MESSAGE_MENU_OPTIONS = {
             new Option(AoiConfig.showCopyPhoto, R.string.CopyPhoto),
@@ -42,6 +43,10 @@ public final class AoiChatSettingsActivity extends BaseAoiSettingsActivity {
             new Option(AoiConfig.repeatConfirm, R.string.RepeatConfirm),
             new Option(AoiConfig.previewRecording, R.string.PreviewRecording),
             new Option(AoiConfig.botCommandConfirm, R.string.BotCommandConfirm),
+    };
+    private static final Option[] PULL_UP_TO_SWITCH_OPTIONS = {
+            new Option(AoiConfig.pullToNextChannel, R.string.ChannelsTab),
+            new Option(AoiConfig.pullToNextTopic, R.string.Topics),
     };
 
     private StickerSizeCell stickerSizeCell;
@@ -77,6 +82,7 @@ public final class AoiChatSettingsActivity extends BaseAoiSettingsActivity {
         items.add(UItem.asCustom(stickerSizePreview));
         items.add(UItem.asShadow(null));
         items.add(asConfigCheck(AoiConfig.showOnlineStatus, R.string.ShowOnlineStatus, R.string.ShowOnlineStatusInfo));
+        addGroup(items, adapter, PULL_UP_TO_SWITCH, 0, R.string.PullUpToSwitch, PULL_UP_TO_SWITCH_OPTIONS);
         items.add(asConfigCheck(AoiConfig.hideShareButton, R.string.HideShareButton));
         items.add(asConfigCheck(AoiConfig.hideKeyboardOnScroll, R.string.HideKeyboardOnScroll));
         items.add(asConfigCheck(AoiConfig.hideChannelBottomBar, R.string.HideChannelBottomBar));
