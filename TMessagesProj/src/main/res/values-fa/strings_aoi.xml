@@ -62,6 +62,7 @@
     <string name="StickerSizePreviewMeow">میو~</string>
     <string name="ShowOnlineStatus">نمایش وضعیت آنلاین</string>
     <string name="ShowOnlineStatusInfo">رنگ‌های زرد، نارنجی و قرمز به ترتیب نشان‌دهنده آخرین بازدید در ۱۵، ۳۰ و ۶۰ دقیقه گذشته هستند.</string>
+    <string name="PullUpToSwitch">کشیدن به بالا برای جابه‌جایی</string>
     <string name="HideShareButton">پنهان کردن دکمه اشتراک‌گذاری</string>
     <string name="HideKeyboardOnScroll">پنهان کردن صفحه‌کلید هنگام اسکرول</string>
     <string name="HideChannelBottomBar">پنهان کردن نوار پایین کانال</string>
@@ -88,6 +89,10 @@
     <string name="FrontCamera">دوربین جلو</string>
     <string name="RearCamera">دوربین عقب</string>
     <string name="PreviewRecording">پیش از ارسال ضبط‌شده‌ها</string>
+    <string name="TabletMode">حالت تبلت</string>
+    <string name="TabletModeAuto">خودکار</string>
+    <string name="TabletModeOn">روشن</string>
+    <string name="TabletModeOff">خاموش</string>
     <string name="SystemFonts">فونت‌های سیستم</string>
     <string name="SystemFontsText">متن</string>
     <string name="SystemFontsEmoji">ایموجی</string>

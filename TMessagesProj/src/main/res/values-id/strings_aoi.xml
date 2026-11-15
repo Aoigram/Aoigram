@@ -62,6 +62,7 @@
     <string name="StickerSizePreviewMeow">Meong~</string>
     <string name="ShowOnlineStatus">Tampilkan status online</string>
     <string name="ShowOnlineStatusInfo">Kuning, oranye, dan merah berarti terakhir dilihat dalam 15, 30, dan 60 menit.</string>
+    <string name="PullUpToSwitch">Tarik ke atas untuk beralih</string>
     <string name="HideShareButton">Sembunyikan tombol bagikan</string>
     <string name="HideKeyboardOnScroll">Sembunyikan keyboard saat menggulir</string>
     <string name="HideChannelBottomBar">Sembunyikan bilah bawah channel</string>
@@ -88,6 +89,10 @@
     <string name="FrontCamera">Kamera depan</string>
     <string name="RearCamera">Kamera belakang</string>
     <string name="PreviewRecording">Sebelum mengirim rekaman</string>
+    <string name="TabletMode">Mode tablet</string>
+    <string name="TabletModeAuto">Otomatis</string>
+    <string name="TabletModeOn">Aktif</string>
+    <string name="TabletModeOff">Nonaktif</string>
     <string name="SystemFonts">Font sistem</string>
     <string name="SystemFontsText">Teks</string>
     <string name="SystemFontsEmoji">Emoji</string>

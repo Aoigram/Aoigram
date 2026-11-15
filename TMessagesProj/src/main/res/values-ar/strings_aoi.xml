@@ -62,6 +62,7 @@
     <string name="StickerSizePreviewMeow">مياو~</string>
     <string name="ShowOnlineStatus">إظهار حالة الاتصال</string>
     <string name="ShowOnlineStatusInfo">يشير الأصفر والبرتقالي والأحمر إلى آخر ظهور خلال 15 و30 و60 دقيقة.</string>
+    <string name="PullUpToSwitch">اسحب لأعلى للتبديل</string>
     <string name="HideShareButton">إخفاء زر المشاركة</string>
     <string name="HideKeyboardOnScroll">إخفاء لوحة المفاتيح عند التمرير</string>
     <string name="HideChannelBottomBar">إخفاء الشريط السفلي للقنوات</string>
@@ -88,6 +89,10 @@
     <string name="FrontCamera">الكاميرا الأمامية</string>
     <string name="RearCamera">الكاميرا الخلفية</string>
     <string name="PreviewRecording">قبل إرسال التسجيلات</string>
+    <string name="TabletMode">وضع الجهاز اللوحي</string>
+    <string name="TabletModeAuto">تلقائي</string>
+    <string name="TabletModeOn">مفعّل</string>
+    <string name="TabletModeOff">معطّل</string>
     <string name="SystemFonts">خطوط النظام</string>
     <string name="SystemFontsText">النص</string>
     <string name="SystemFontsEmoji">الرموز التعبيرية</string>

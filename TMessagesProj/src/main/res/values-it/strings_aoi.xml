@@ -62,6 +62,7 @@
     <string name="StickerSizePreviewMeow">Miao~</string>
     <string name="ShowOnlineStatus">Mostra stato online</string>
     <string name="ShowOnlineStatusInfo">Giallo, arancione e rosso indicano un ultimo accesso entro 15, 30 e 60 minuti.</string>
+    <string name="PullUpToSwitch">Trascina in alto per cambiare</string>
     <string name="HideShareButton">Nascondi pulsante condividi</string>
     <string name="HideKeyboardOnScroll">Nascondi tastiera durante lo scorrimento</string>
     <string name="HideChannelBottomBar">Nascondi barra inferiore nei canali</string>
@@ -88,6 +89,10 @@
     <string name="FrontCamera">Fotocamera anteriore</string>
     <string name="RearCamera">Fotocamera posteriore</string>
     <string name="PreviewRecording">Prima di inviare registrazioni</string>
+    <string name="TabletMode">Modalità tablet</string>
+    <string name="TabletModeAuto">Automatica</string>
+    <string name="TabletModeOn">Attivata</string>
+    <string name="TabletModeOff">Disattivata</string>
     <string name="SystemFonts">Font di sistema</string>
     <string name="SystemFontsText">Testo</string>
     <string name="SystemFontsEmoji">Emoji</string>

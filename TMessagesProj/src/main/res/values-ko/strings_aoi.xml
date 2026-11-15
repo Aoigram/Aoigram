@@ -62,6 +62,7 @@
     <string name="StickerSizePreviewMeow">야옹~</string>
     <string name="ShowOnlineStatus">온라인 상태 표시</string>
     <string name="ShowOnlineStatusInfo">노란색, 주황색, 빨간색은 각각 최근 접속이 15분, 30분, 60분 이내임을 나타냅니다.</string>
+    <string name="PullUpToSwitch">위로 당겨서 전환</string>
     <string name="HideShareButton">공유 버튼 숨기기</string>
     <string name="HideKeyboardOnScroll">스크롤 시 키보드 숨기기</string>
     <string name="HideChannelBottomBar">채널 하단 바 숨기기</string>
@@ -88,6 +89,10 @@
     <string name="FrontCamera">전면 카메라</string>
     <string name="RearCamera">후면 카메라</string>
     <string name="PreviewRecording">녹음·녹화 전송 전 미리보기</string>
+    <string name="TabletMode">태블릿 모드</string>
+    <string name="TabletModeAuto">자동</string>
+    <string name="TabletModeOn">켜짐</string>
+    <string name="TabletModeOff">꺼짐</string>
     <string name="SystemFonts">시스템 글꼴</string>
     <string name="SystemFontsText">텍스트</string>
     <string name="SystemFontsEmoji">이모지</string>

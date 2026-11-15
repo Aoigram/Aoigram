@@ -62,6 +62,7 @@
     <string name="StickerSizePreviewMeow">Miau~</string>
     <string name="ShowOnlineStatus">Mostrar estado en línea</string>
     <string name="ShowOnlineStatusInfo">Amarillo, naranja y rojo significan última vez hace menos de 15, 30 y 60 minutos.</string>
+    <string name="PullUpToSwitch">Deslizar hacia arriba para cambiar</string>
     <string name="HideShareButton">Ocultar botón de compartir</string>
     <string name="HideKeyboardOnScroll">Ocultar teclado al desplazar</string>
     <string name="HideChannelBottomBar">Ocultar barra inferior en canales</string>
@@ -88,6 +89,10 @@
     <string name="FrontCamera">Cámara frontal</string>
     <string name="RearCamera">Cámara trasera</string>
     <string name="PreviewRecording">Antes de enviar grabaciones</string>
+    <string name="TabletMode">Modo tableta</string>
+    <string name="TabletModeAuto">Automático</string>
+    <string name="TabletModeOn">Activado</string>
+    <string name="TabletModeOff">Desactivado</string>
     <string name="SystemFonts">Fuentes del sistema</string>
     <string name="SystemFontsText">Texto</string>
     <string name="SystemFontsEmoji">Emojis</string>

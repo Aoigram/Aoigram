@@ -62,6 +62,7 @@
     <string name="StickerSizePreviewMeow">Miau~</string>
     <string name="ShowOnlineStatus">Pokaż status dostępności</string>
     <string name="ShowOnlineStatusInfo">Żółty, pomarańczowy i czerwony oznaczają ostatnią aktywność w ciągu 15, 30 i 60 minut.</string>
+    <string name="PullUpToSwitch">Pociągnij w górę, aby przełączyć</string>
     <string name="HideShareButton">Ukryj przycisk udostępniania</string>
     <string name="HideKeyboardOnScroll">Ukryj klawiaturę podczas przewijania</string>
     <string name="HideChannelBottomBar">Ukryj dolny pasek w kanałach</string>
@@ -88,6 +89,10 @@
     <string name="FrontCamera">Przednia kamera</string>
     <string name="RearCamera">Tylna kamera</string>
     <string name="PreviewRecording">Przed wysłaniem nagrania</string>
+    <string name="TabletMode">Tryb tabletu</string>
+    <string name="TabletModeAuto">Automatyczny</string>
+    <string name="TabletModeOn">Włączony</string>
+    <string name="TabletModeOff">Wyłączony</string>
     <string name="SystemFonts">Czcionki systemowe</string>
     <string name="SystemFontsText">Tekst</string>
     <string name="SystemFontsEmoji">Emoji</string>

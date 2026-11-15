@@ -62,6 +62,7 @@
     <string name="StickerSizePreviewMeow">Мяу~</string>
     <string name="ShowOnlineStatus">Показывать статус в сети</string>
     <string name="ShowOnlineStatusInfo">Жёлтый, оранжевый и красный цвета означают вход в сеть в пределах 15, 30 и 60 минут.</string>
+    <string name="PullUpToSwitch">Потянуть вверх для перехода</string>
     <string name="HideShareButton">Скрыть кнопку «Поделиться»</string>
     <string name="HideKeyboardOnScroll">Скрывать клавиатуру при прокрутке</string>
     <string name="HideChannelBottomBar">Скрыть нижнюю панель в каналах</string>
@@ -88,6 +89,10 @@
     <string name="FrontCamera">Фронтальная камера</string>
     <string name="RearCamera">Основная камера</string>
     <string name="PreviewRecording">Перед отправкой записи</string>
+    <string name="TabletMode">Режим планшета</string>
+    <string name="TabletModeAuto">Автоматически</string>
+    <string name="TabletModeOn">Включено</string>
+    <string name="TabletModeOff">Выключено</string>
     <string name="SystemFonts">Системные шрифты</string>
     <string name="SystemFontsText">Текст</string>
     <string name="SystemFontsEmoji">Эмодзи</string>
