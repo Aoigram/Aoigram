@@ -198,15 +198,22 @@ public final class MessageJsonActivity extends BaseAoiSettingsActivity {
         }
         Node target = node.start == null ? node : node.start;
         if (target.childCount > 0 || target.isString()) {
-            target.expanded = !target.expanded;
-            listView.adapter.update(true);
+            int startPosition = -1;
             if (node.start != null) {
                 for (int i = 0; i < listView.adapter.getItemCount(); i++) {
                     if (listView.adapter.getItem(i).object == target) {
-                        listView.layoutManager.scrollToPositionWithOffset(i, 0);
+                        View startView = listView.layoutManager.findViewByPosition(i);
+                        if (startView == null || startView.getTop() < listView.getPaddingTop()) {
+                            startPosition = i;
+                        }
                         break;
                     }
                 }
+            }
+            target.expanded = !target.expanded;
+            listView.adapter.update(true);
+            if (startPosition >= 0) {
+                listView.layoutManager.scrollToPositionWithOffset(startPosition, view.getTop() - listView.getPaddingTop());
             }
         }
     }
@@ -333,7 +340,7 @@ public final class MessageJsonActivity extends BaseAoiSettingsActivity {
             setTextDirection(TEXT_DIRECTION_LTR);
             setLayoutDirection(LAYOUT_DIRECTION_LTR);
             setEllipsize(TextUtils.TruncateAt.END);
-            setMinimumHeight(dp(40));
+            setMinimumHeight(dp(32));
             guidePaint.setStrokeWidth(dp(1));
             guidePaint.setStrokeCap(Paint.Cap.ROUND);
             setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -341,7 +348,7 @@ public final class MessageJsonActivity extends BaseAoiSettingsActivity {
 
         void bind(Node node) {
             this.node = node;
-            setPadding(dp(28 + Math.min(node.depth, 8) * 12), dp(8), dp(16), dp(8));
+            setPadding(dp(28 + Math.min(node.depth, 8) * 12), dp(6), dp(16), dp(6));
             setMaxLines(node.isString() && !node.expanded ? 4 : Integer.MAX_VALUE);
             setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText, resourcesProvider));
             SpannableStringBuilder text = new SpannableStringBuilder();
@@ -391,7 +398,7 @@ public final class MessageJsonActivity extends BaseAoiSettingsActivity {
             }
             if (node.start == null && node.childCount > 0) {
                 float x = dp(16 + depth * 12);
-                float y = dp(20);
+                float y = getTotalPaddingTop() + getLayout().getLineBottom(0) / 2f;
                 guidePaint.setColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText, resourcesProvider));
                 canvas.save();
                 canvas.rotate(node.expanded ? 90 : 0, x, y);
