@@ -90,6 +90,10 @@
     <string name="FrontCamera">Front camera</string>
     <string name="RearCamera">Rear camera</string>
     <string name="PreviewRecording">Before sending recordings</string>
+    <string name="TabletMode">Tablet mode</string>
+    <string name="TabletModeAuto">Auto</string>
+    <string name="TabletModeOn">On</string>
+    <string name="TabletModeOff">Off</string>
     <string name="SystemFonts">System fonts</string>
     <string name="SystemFontsText">Text</string>
     <string name="SystemFontsEmoji">Emoji</string>

@@ -244,6 +244,7 @@ import java.util.zip.GZIPOutputStream;
 import me.vkryl.core.BitwiseUtils;
 import nu.gpu.aoigram.config.AoiConfig;
 import nu.gpu.aoigram.typeface.Typefaces;
+import nu.gpu.aoigram.utils.TabletMode;
 
 public class AndroidUtilities {
     public final static int REPLACING_TAG_TYPE_LINK = 0;
@@ -3066,6 +3067,9 @@ public class AndroidUtilities {
     }
 
     public static boolean isTabletForce() {
+        if (TabletMode.APPLIED != TabletMode.AUTO) {
+            return TabletMode.APPLIED == TabletMode.ON;
+        }
         return ApplicationLoader.applicationContext != null && ApplicationLoader.applicationContext.getResources().getBoolean(R.bool.isTablet);
     }
 

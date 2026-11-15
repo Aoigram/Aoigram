@@ -53,6 +53,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import nu.gpu.aoigram.utils.TabletMode;
+
 public class SharedConfig {
     /**
      * V2: Ping and check time serialized
@@ -612,7 +614,7 @@ public class SharedConfig {
             hasCameraCache = preferences.contains("cameraCache");
             roundCamera16to9 = true;
             repeatMode = preferences.getInt("repeatMode", 0);
-            fontSize = preferences.getInt("fons_size", AndroidUtilities.isTablet() && !AndroidUtilities.isFold() ? 18 : 16);
+            fontSize = preferences.getInt("fons_size", TabletMode.isDeviceTablet() && !AndroidUtilities.isFold() ? 18 : 16);
             fontSizeIsDefault = !preferences.contains("fons_size");
             bubbleRadius = preferences.getInt("bubbleRadius", 17);
             ivFontSize = preferences.getInt("iv_font_size", fontSize);
@@ -711,7 +713,7 @@ public class SharedConfig {
     public static void updateTabletConfig() {
         if (fontSizeIsDefault) {
             SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
-            fontSize = preferences.getInt("fons_size", AndroidUtilities.isTablet() && !AndroidUtilities.isFold() ? 18 : 16);
+            fontSize = preferences.getInt("fons_size", TabletMode.isDeviceTablet() && !AndroidUtilities.isFold() ? 18 : 16);
             ivFontSize = preferences.getInt("iv_font_size", fontSize);
         }
     }

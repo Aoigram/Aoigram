@@ -24,6 +24,7 @@ import nu.gpu.aoigram.dialogs.FolderUnreadCounter;
 import nu.gpu.aoigram.tabs.MainTabs;
 import nu.gpu.aoigram.tabs.MainTabsPreview;
 import nu.gpu.aoigram.utils.AppUtil;
+import nu.gpu.aoigram.utils.TabletMode;
 
 public final class AoiAppearanceSettingsActivity extends BaseAoiSettingsActivity {
 
@@ -73,6 +74,9 @@ public final class AoiAppearanceSettingsActivity extends BaseAoiSettingsActivity
 
     @Override
     protected void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
+        UItem tabletModeItem = UItem.asButton(0, getString(R.string.TabletMode), TabletMode.getLabel(AoiConfig.tabletMode.get()));
+        tabletModeItem.object = AoiConfig.tabletMode;
+        items.add(tabletModeItem);
         addGroup(items, adapter, SYSTEM_FONTS, 0, R.string.SystemFonts, SYSTEM_FONTS_OPTIONS);
         items.add(asConfigCheck(AoiConfig.glareEffects, R.string.GlareEffects));
         if (Build.VERSION.SDK_INT >= 34) {
@@ -108,7 +112,13 @@ public final class AoiAppearanceSettingsActivity extends BaseAoiSettingsActivity
 
     @Override
     protected void onConfigToggled(BoolConfig config) {
-        if ((config == AoiConfig.systemFonts || config == AoiConfig.systemEmoji) && (restartBulletin == null || !restartBulletin.isShowing())) {
+        if (config == AoiConfig.systemFonts || config == AoiConfig.systemEmoji) {
+            showRestartBulletin();
+        }
+    }
+
+    private void showRestartBulletin() {
+        if (restartBulletin == null || !restartBulletin.isShowing()) {
             restartBulletin = BulletinFactory.of(this).createSimpleBulletin(R.raw.chats_infotip, getString(R.string.RestartToApply), getString(R.string.RestartApp), () -> AppUtil.restart(getParentActivity())).show();
         }
     }
@@ -116,7 +126,17 @@ public final class AoiAppearanceSettingsActivity extends BaseAoiSettingsActivity
     @Override
     protected void onItemClick(UItem item, View view, int position, float x, float y) {
         super.onItemClick(item, view, position, x, y);
-        if (item.object == AoiConfig.glareEffects) {
+        if (item.object == AoiConfig.tabletMode) {
+            String[] labels = {TabletMode.getLabel(TabletMode.AUTO), TabletMode.getLabel(TabletMode.ON), TabletMode.getLabel(TabletMode.OFF)};
+            showDialog(AlertsCreator.createSingleChoiceDialog(getParentActivity(), labels, getString(R.string.TabletMode), AoiConfig.tabletMode.get(), (dialog, which) -> {
+                if (which == AoiConfig.tabletMode.get()) {
+                    return;
+                }
+                AoiConfig.tabletMode.set(which);
+                listView.adapter.update(true);
+                showRestartBulletin();
+            }));
+        } else if (item.object == AoiConfig.glareEffects) {
             folderTabsPreview.updateColors();
             mainTabsPreview.updateColors();
         } else if (item.object == AoiConfig.hideSearchBar) {

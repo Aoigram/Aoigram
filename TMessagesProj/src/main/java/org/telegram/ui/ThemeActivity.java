@@ -127,6 +127,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
+import nu.gpu.aoigram.utils.TabletMode;
+
 public class ThemeActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
     public final static int THEME_TYPE_BASIC = 0;
@@ -1119,7 +1121,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
                     builder1.setMessage(getString("ThemeResetToDefaultsText", R.string.ThemeResetToDefaultsText));
                     builder1.setPositiveButton(getString("Reset", R.string.Reset), (dialogInterface, i) -> {
                         boolean changed = false;
-                        if (setFontSize(AndroidUtilities.isTablet() && !AndroidUtilities.isFold() ? 18 : 16)) {
+                        if (setFontSize(TabletMode.isDeviceTablet() && !AndroidUtilities.isFold() ? 18 : 16)) {
                             changed = true;
                         }
                         if (setBubbleRadius(17, true)) {
@@ -1783,7 +1785,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
             menuItem.hideSubItem(share_theme);
             menuItem.hideSubItem(edit_theme);
         }
-        int fontSize = AndroidUtilities.isTablet() && !AndroidUtilities.isFold() ? 18 : 16;
+        int fontSize = TabletMode.isDeviceTablet() && !AndroidUtilities.isFold() ? 18 : 16;
         Theme.ThemeInfo currentTheme = Theme.getCurrentTheme();
         if (SharedConfig.fontSize != fontSize || SharedConfig.bubbleRadius != 17 || !currentTheme.firstAccentIsDefault || currentTheme.currentAccentId != Theme.DEFALT_THEME_ACCENT_ID || accent != null && accent.overrideWallpaper != null && !Theme.DEFAULT_BACKGROUND_SLUG.equals(accent.overrideWallpaper.slug)) {
             menuItem.showSubItem(reset_settings);

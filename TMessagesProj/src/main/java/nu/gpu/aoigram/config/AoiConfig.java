@@ -20,6 +20,7 @@ import nu.gpu.aoigram.network.DownloadSpeedBoost;
 import nu.gpu.aoigram.profile.PeerIdDc;
 import nu.gpu.aoigram.remote.AppUpdates;
 import nu.gpu.aoigram.tabs.MainTabs;
+import nu.gpu.aoigram.utils.TabletMode;
 
 @SuppressLint("ApplySharedPref")
 public final class AoiConfig {
@@ -48,6 +49,7 @@ public final class AoiConfig {
     public static final BoolConfig uploadSpeedBoost = register(new BoolConfig("uploadSpeedBoost", false));
     public static final BoolConfig preferOriginalQuality = register(new BoolConfig("preferOriginalQuality", false));
 
+    public static final IntConfig tabletMode = register(new IntConfig("tabletMode", TabletMode.AUTO));
     public static final BoolConfig systemFonts = register(new BoolConfig("systemFonts", true));
     public static final BoolConfig systemEmoji = register(new BoolConfig("systemEmoji", false));
     public static final BoolConfig glareEffects = register(new BoolConfig("glareEffects", false));
