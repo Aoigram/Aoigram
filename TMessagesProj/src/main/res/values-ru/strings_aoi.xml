@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">Использовать права администратора</string>
     <string name="MyMessagesDeleted">Ваши сообщения удалены</string>
     <string name="NoMessagesToDelete">Нет сообщений для удаления</string>
+    <string name="QrLogin">Вход по QR-коду</string>
+    <string name="QrLoginStep1">Откройте Telegram на телефоне</string>
+    <string name="QrLoginStep2">Перейдите в **%1$s** > **%2$s** > **%3$s**</string>
+    <string name="QrLoginStep3">Наведите телефон на этот экран, чтобы подтвердить вход</string>
 </resources>

@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">관리자 권한 사용</string>
     <string name="MyMessagesDeleted">내 메시지가 삭제되었습니다</string>
     <string name="NoMessagesToDelete">삭제할 메시지가 없습니다</string>
+    <string name="QrLogin">QR 코드로 로그인</string>
+    <string name="QrLoginStep1">휴대폰에서 Telegram을 여세요</string>
+    <string name="QrLoginStep2">**%1$s** > **%2$s** > **%3$s**(으)로 이동하세요</string>
+    <string name="QrLoginStep3">휴대폰을 이 화면에 대고 로그인을 확인하세요</string>
 </resources>

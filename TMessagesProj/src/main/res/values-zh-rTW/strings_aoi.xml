@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">使用管理員權限</string>
     <string name="MyMessagesDeleted">已刪除你的訊息</string>
     <string name="NoMessagesToDelete">沒有可刪除的訊息</string>
+    <string name="QrLogin">使用 QR 碼登入</string>
+    <string name="QrLoginStep1">在手機上開啟 Telegram</string>
+    <string name="QrLoginStep2">前往 **%1$s** > **%2$s** > **%3$s**</string>
+    <string name="QrLoginStep3">將手機對準此螢幕以確認登入</string>
 </resources>

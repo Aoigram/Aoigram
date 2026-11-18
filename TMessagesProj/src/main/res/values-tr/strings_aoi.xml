@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">Yönetici yetkilerini kullan</string>
     <string name="MyMessagesDeleted">Mesajlarınız silindi</string>
     <string name="NoMessagesToDelete">Silinecek mesaj yok</string>
+    <string name="QrLogin">QR Kodla Giriş Yap</string>
+    <string name="QrLoginStep1">Telefonunuzda Telegram\'ı açın</string>
+    <string name="QrLoginStep2">**%1$s** > **%2$s** > **%3$s** bölümüne gidin</string>
+    <string name="QrLoginStep3">Girişi onaylamak için telefonunuzu bu ekrana doğrultun</string>
 </resources>

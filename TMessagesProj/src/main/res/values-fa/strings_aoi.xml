@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">استفاده از دسترسی ادمین</string>
     <string name="MyMessagesDeleted">پیام‌های شما حذف شدند</string>
     <string name="NoMessagesToDelete">پیامی برای حذف وجود ندارد</string>
+    <string name="QrLogin">ورود با کد QR</string>
+    <string name="QrLoginStep1">تلگرام را روی گوشی خود باز کنید</string>
+    <string name="QrLoginStep2">به **%1$s** > **%2$s** > **%3$s** بروید</string>
+    <string name="QrLoginStep3">برای تأیید ورود، گوشی خود را به سمت این صفحه بگیرید</string>
 </resources>

@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">Gunakan hak admin</string>
     <string name="MyMessagesDeleted">Pesan Anda telah dihapus</string>
     <string name="NoMessagesToDelete">Tidak ada pesan untuk dihapus</string>
+    <string name="QrLogin">Masuk dengan Kode QR</string>
+    <string name="QrLoginStep1">Buka Telegram di ponsel Anda</string>
+    <string name="QrLoginStep2">Buka **%1$s** > **%2$s** > **%3$s**</string>
+    <string name="QrLoginStep3">Arahkan ponsel Anda ke layar ini untuk mengonfirmasi masuk</string>
 </resources>

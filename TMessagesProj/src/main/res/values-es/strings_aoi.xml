@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">Usar permisos de administrador</string>
     <string name="MyMessagesDeleted">Tus mensajes fueron eliminados</string>
     <string name="NoMessagesToDelete">No hay mensajes para eliminar</string>
+    <string name="QrLogin">Iniciar sesión con código QR</string>
+    <string name="QrLoginStep1">Abre Telegram en tu teléfono</string>
+    <string name="QrLoginStep2">Ve a **%1$s** > **%2$s** > **%3$s**</string>
+    <string name="QrLoginStep3">Apunta tu teléfono a esta pantalla para confirmar el inicio de sesión</string>
 </resources>

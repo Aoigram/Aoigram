@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">استخدام صلاحيات المشرف</string>
     <string name="MyMessagesDeleted">تم حذف رسائلك</string>
     <string name="NoMessagesToDelete">لا توجد رسائل لحذفها</string>
+    <string name="QrLogin">تسجيل الدخول برمز QR</string>
+    <string name="QrLoginStep1">افتح تيليجرام على هاتفك</string>
+    <string name="QrLoginStep2">انتقل إلى **%1$s** > **%2$s** > **%3$s**</string>
+    <string name="QrLoginStep3">وجّه هاتفك نحو هذه الشاشة لتأكيد تسجيل الدخول</string>
 </resources>

@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">Sử dụng quyền quản trị viên</string>
     <string name="MyMessagesDeleted">Đã xóa tin nhắn của bạn</string>
     <string name="NoMessagesToDelete">Không có tin nhắn nào để xóa</string>
+    <string name="QrLogin">Đăng nhập bằng mã QR</string>
+    <string name="QrLoginStep1">Mở Telegram trên điện thoại của bạn</string>
+    <string name="QrLoginStep2">Đi tới **%1$s** > **%2$s** > **%3$s**</string>
+    <string name="QrLoginStep3">Hướng điện thoại vào màn hình này để xác nhận đăng nhập</string>
 </resources>

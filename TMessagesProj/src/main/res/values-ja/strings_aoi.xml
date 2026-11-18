@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">管理者権限を使用</string>
     <string name="MyMessagesDeleted">メッセージを削除しました</string>
     <string name="NoMessagesToDelete">削除するメッセージがありません</string>
+    <string name="QrLogin">QRコードでログイン</string>
+    <string name="QrLoginStep1">スマートフォンでTelegramを開きます</string>
+    <string name="QrLoginStep2">**%1$s** > **%2$s** > **%3$s** に移動します</string>
+    <string name="QrLoginStep3">スマートフォンをこの画面に向けてログインを確認します</string>
 </resources>

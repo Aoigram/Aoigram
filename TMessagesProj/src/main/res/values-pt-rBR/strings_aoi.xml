@@ -334,4 +334,8 @@
     <string name="DeleteMyMessagesAdmin">Usar direitos de administrador</string>
     <string name="MyMessagesDeleted">Suas mensagens foram apagadas</string>
     <string name="NoMessagesToDelete">Nenhuma mensagem para apagar</string>
+    <string name="QrLogin">Entrar com código QR</string>
+    <string name="QrLoginStep1">Abra o Telegram no seu celular</string>
+    <string name="QrLoginStep2">Vá em **%1$s** > **%2$s** > **%3$s**</string>
+    <string name="QrLoginStep3">Aponte o celular para esta tela para confirmar o login</string>
 </resources>
