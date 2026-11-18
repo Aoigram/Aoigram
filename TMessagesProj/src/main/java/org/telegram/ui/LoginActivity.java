@@ -221,8 +221,12 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
 
+import nu.gpu.aoigram.login.QrLoginView;
+
 @SuppressLint("HardwareIds")
 public class LoginActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
+    private ImageView qrButtonView;
+
     public final static boolean ENABLE_PASTED_TEXT_PROCESSING = false;
     private final static int SHOW_DELAY = SharedConfig.getDevicePerformanceClass() <= SharedConfig.PERFORMANCE_CLASS_AVERAGE ? 150 : 100;
 
@@ -260,7 +264,8 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             VIEW_CODE_FRAGMENT_SMS = 15,
             VIEW_CODE_WORD = 16,
             VIEW_CODE_PHRASE = 17,
-            VIEW_PAY = 18;
+            VIEW_PAY = 18,
+            VIEW_QR_LOGIN = 19;
 
     public final static int COUNTRY_STATE_NOT_SET_OR_VALID = 0,
             COUNTRY_STATE_EMPTY = 1,
@@ -308,7 +313,8 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             VIEW_CODE_FRAGMENT_SMS,
             VIEW_CODE_WORD,
             VIEW_CODE_PHRASE,
-            VIEW_PAY
+            VIEW_PAY,
+            VIEW_QR_LOGIN
     })
     private @interface ViewNumber {}
 
@@ -321,7 +327,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
 
     @ViewNumber
     private int currentViewNum;
-    private final SlideView[] views = new SlideView[19];
+    private final SlideView[] views = new SlideView[20];
     private CustomPhoneKeyboardView keyboardView;
     private ValueAnimator keyboardAnimator;
     private boolean paid;
@@ -599,6 +605,9 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 marginLayoutParams = (MarginLayoutParams) proxyButtonView.getLayoutParams();
                 marginLayoutParams.topMargin = AndroidUtilities.dp(16) + statusBarHeight;
 
+                marginLayoutParams = (MarginLayoutParams) qrButtonView.getLayoutParams();
+                marginLayoutParams.topMargin = AndroidUtilities.dp(16) + statusBarHeight;
+
                 marginLayoutParams = (MarginLayoutParams) radialProgressView.getLayoutParams();
                 marginLayoutParams.topMargin = AndroidUtilities.dp(16) + statusBarHeight;
 
@@ -700,6 +709,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         views[VIEW_CODE_WORD] = new LoginActivityPhraseView(context, AUTH_TYPE_WORD);
         views[VIEW_CODE_PHRASE] = new LoginActivityPhraseView(context, AUTH_TYPE_PHRASE);
         views[VIEW_PAY] = new LoginPayView(context);
+        views[VIEW_QR_LOGIN] = new QrLoginView(context, this, this::onAuthSuccess, () -> ((PhoneView) views[VIEW_PHONE_INPUT]).requestPassword());
 
         for (int a = 0; a < views.length; a++) {
             views[a].setVisibility(a == 0 ? View.VISIBLE : View.GONE);
@@ -779,6 +789,20 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 finishFragment();
             });
         }
+
+        qrButtonView = new ImageView(context);
+        qrButtonView.setImageResource(R.drawable.msg_qrcode);
+        qrButtonView.setOnClickListener(v -> {
+            views[VIEW_PHONE_INPUT].onCancelPressed();
+            needHideProgress(true);
+            setPage(VIEW_QR_LOGIN, true, null, false);
+        });
+        qrButtonView.setContentDescription(getString(R.string.QrLogin));
+        qrButtonView.setPadding(padding, padding, padding, padding);
+        qrButtonView.setVisibility(activityMode == MODE_LOGIN && currentViewNum == VIEW_PHONE_INPUT ? View.VISIBLE : View.GONE);
+        ThemeBind.colorFilter(qrButtonView, Theme.key_windowBackgroundWhiteBlackText, PorterDuff.Mode.SRC_ATOP);
+        ThemeBind.selectorBackground(qrButtonView, Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP), null, ThemeBind.of(Theme.key_listSelector));
+        sizeNotifierFrameLayout.addView(qrButtonView, LayoutHelper.createFrame(32, 32, Gravity.RIGHT | Gravity.TOP, 16, 16, 16, 16));
 
         proxyButtonView = new ImageView(context);
         proxyButtonView.setImageDrawable(proxyDrawable = new ProxyDrawable(context));
@@ -1548,6 +1572,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 currentDoneType = DONE_TYPE_ACTION;
             }
         }
+        qrButtonView.setVisibility(activityMode == MODE_LOGIN && page == VIEW_PHONE_INPUT ? View.VISIBLE : View.GONE);
         if (animated) {
             final SlideView outView = views[currentViewNum];
             final SlideView newView = views[page];
@@ -1567,9 +1592,11 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                     if (currentDoneType == DONE_TYPE_FLOATING && needFloatingButton) {
                         showDoneButton(true, true);
                     }
-                    outView.setVisibility(View.GONE);
-                    outView.onHide();
-                    outView.setX(0);
+                    if (outView != views[currentViewNum]) {
+                        outView.setVisibility(View.GONE);
+                        outView.onHide();
+                        outView.setX(0);
+                    }
                 }
             });
             pagesAnimation.playTogether(
@@ -8987,9 +9014,11 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                     proxyButtonView.setVisibility(View.GONE);
                 }
             }).start();
+            qrButtonView.animate().translationX(show ? -AndroidUtilities.dp(40) : 0).start();
         } else {
             proxyButtonView.setVisibility(show ? View.VISIBLE : View.GONE);
             proxyButtonView.setAlpha(show ? 1f : 0f);
+            qrButtonView.setTranslationX(show ? -AndroidUtilities.dp(40) : 0);
         }
     }
 

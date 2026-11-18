@@ -20363,6 +20363,8 @@ public class MessagesController extends BaseController implements NotificationCe
                         getUnconfirmedAuthController().processUpdate((TL_update.TL_updateNewAuthorization) baseUpdate);
                     } else if (baseUpdate instanceof TL_update.TL_updateNewBotConnection) {
                         getUnconfirmedAuthController().processUpdate((TL_update.TL_updateNewBotConnection) baseUpdate);
+                    } else if (baseUpdate instanceof TL_update.TL_updateLoginToken) {
+                        getNotificationCenter().postNotificationName(NotificationCenter.loginTokenUpdated);
                     } else if (baseUpdate instanceof TL_update.TL_updateChannel) {
                         TL_update.TL_updateChannel update = (TL_update.TL_updateChannel) baseUpdate;
                         TLRPC.Dialog dialog = dialogs_dict.get(-update.channel_id);
