@@ -790,6 +790,13 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             });
         }
 
+        proxyButtonView = new ImageView(context);
+        proxyButtonView.setImageDrawable(proxyDrawable = new ProxyDrawable(context));
+        proxyButtonView.setOnClickListener(v -> presentFragment(new ProxyListActivity()));
+        proxyButtonView.setAlpha(0f);
+        proxyButtonView.setVisibility(View.GONE);
+        sizeNotifierFrameLayout.addView(proxyButtonView, LayoutHelper.createFrame(32, 32, Gravity.RIGHT | Gravity.TOP, 16, 16, 16, 16));
+
         qrButtonView = new ImageView(context);
         qrButtonView.setImageResource(R.drawable.msg_qrcode);
         qrButtonView.setOnClickListener(v -> {
@@ -803,13 +810,6 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         ThemeBind.colorFilter(qrButtonView, Theme.key_windowBackgroundWhiteBlackText, PorterDuff.Mode.SRC_ATOP);
         ThemeBind.selectorBackground(qrButtonView, Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP), null, ThemeBind.of(Theme.key_listSelector));
         sizeNotifierFrameLayout.addView(qrButtonView, LayoutHelper.createFrame(32, 32, Gravity.RIGHT | Gravity.TOP, 16, 16, 16, 16));
-
-        proxyButtonView = new ImageView(context);
-        proxyButtonView.setImageDrawable(proxyDrawable = new ProxyDrawable(context));
-        proxyButtonView.setOnClickListener(v -> presentFragment(new ProxyListActivity()));
-        proxyButtonView.setAlpha(0f);
-        proxyButtonView.setVisibility(View.GONE);
-        sizeNotifierFrameLayout.addView(proxyButtonView, LayoutHelper.createFrame(32, 32, Gravity.RIGHT | Gravity.TOP, 16, 16, 16, 16));
         updateProxyButton(false, true);
 
         radialProgressView = new RadialProgressView(context);
